@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>接口文档的使用</h2>
+    <button>获取图书列表测试</button>
+    <!-- 需求 -->
+    <!-- 用户点击按钮，发起请求，获取图书列表数据 -->
+        <!-- 发起请求 ==> axios ==> 需要引入库 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 1.获取元素，绑定事件
+        // 2.发起请求 ==> axios ==> 需要引入库
+            //axios语法： axios({ }).then(fn)
+
+
+        // document.querySelector('button').addEventListener('click',function(){})
+        document.querySelector('button').onclick = function(){
+            // axios({
+            //     url:'http://ajax-api.itheima.net/api/books',
+            //     method:'get',
+            // }).then((res)=>{
+            //     // res是接收结果的形参，可随意命名
+            //     console.log(res) // 检查network查看data没数据，接口返回的空数组，后端问题
+            // })
+
+            // 获取新闻列表
+            // 查看接口文档
+                // 1.复制完整接口
+                // 2.请求方式
+                // 3.是否需要传参
+                // 4.返回响应的状态和格式
+            axios({
+                url:'http://ajax-api.itheima.net/api/news',
+                method:'get',
+            }).then((res)=>{
+                // res是接收结果的形参，可随意命名
+                console.log(res) // 检查net查看data没数据，接口返回的空数组，后端问题
+                // 获取具体需要的值,观察返回的res的结果去具体获取
+                console.log(res.data.data) 
+            })
+
+            // 接口文档的返回响应的字段，与返回的具体数据的字段是对应的，可以按照接口文档书写前端渲染逻辑
+        }
+    </script>
+</body>
+</html>

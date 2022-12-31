@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- 导入样式表 -->
+    <link rel="stylesheet" href="./assets/news.css" />
+</head>
+
+<body>
+    <!-- 新闻列表 -->
+    <div id="news-list">
+        <!-- 新闻的 item 项 -->
+        <div class="news-item">
+            <img class="thumb" src="http://ajax-api.itheima.net:80/public/images/0.webp" alt="" />
+            <div class="right-box">
+                <!-- 新闻标题 -->
+                <h1 class="title">5G商用在即，三大运营商营收持续下降</h1>
+                <div class="footer">
+                    <div>
+                        <!-- 新闻来源 -->
+                        <span>胡润百富</span>&nbsp;&nbsp;
+                        <!-- 发布日期 -->
+                        <span>2019-10-28 10:14:38</span>
+                    </div>
+                    <!-- 评论数量 -->
+                    <span>评论数：66</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script src="./lib/axios.js"></script> -->
+    <script>
+
+        // 1.请求数据 ==> 得到一个数组 
+        // 2.渲染数据 ==> 遍历数组，渲染成结构->返回数组，每一项是一组页面结构的字符串
+        // 3.获取元素 ==> 转成字符串，添加到结构上，实现页面渲染
+
+        // 数据渲染到页面的逻辑
+        // 数组==> 遍历数组，改造数组==>返回的数组为，每一项是为html结构的字符串 ==> 数组转成字符串，添加到目标大盒子中，完整结构，实现渲染
+        
+        // axios的逻辑
+        // .get()发送请求  .then接收响应
+
+        axios.get('http://ajax-api.itheima.net/api/news').then((res) => {
+            console.log(res)
+            const jiegou = res.data.data.map((item) => {
+                return `                
+                <div class="news-item">
+                    <img class="thumb" src=${item.img} alt="" />
+                    <div class="right-box">      
+                        <h1 class="title">${item.title}</h1>
+                        <div class="footer">
+                            <div>            
+                                <span>${item.source}</span>&nbsp;&nbsp;
+                                <span>${item.time}</span>
+                            </div>
+                            <span>评论数：${item.cmtcount}</span>
+                        </div>
+                    </div>
+                </div>
+                `
+            })
+            document.querySelector('#news-list').innerHTML = jiegou.join('')
+        })
+
+    </script>
+</body>
+
+</html>

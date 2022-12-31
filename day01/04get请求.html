@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>get请求</h2>
+    <button class="btn1">不传参</button>
+    <button class="btn2">传参</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // 接口文档：
+        // https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/doc-842135
+        // https://gitee.com/westblueflower/testApi
+    // 不传参
+        // 语法1 : axios({url:'',method: 'get', }).then(fn(形参){})
+        // axios({
+        //     url: 'http://ajax-api.itheima.net/api/news',
+        //     method: 'get',
+        // }).then((res) => {            
+        //     console.log(res)
+        // })
+
+        // 语法2 ： axios.get('接口地址').then(fn(形参){})
+     // 传参：
+        // 语法1
+            //  axios.get('接口地址?key=value').then(fn(形参){})
+            // 注意：
+                //  key是接口文档中的请求参数的参数名
+                //  value不需要引号
+        // 语法2
+            // axios.get('接口地址',{
+            //     params:{
+            //         key:value,
+            //     },
+            // }).then(fn(形参){})
+            // 注意：
+                // params 是固定的属性名，不能修改
+                //  key是接口文档中的请求参数的参数名
+                //  value需要引号
+
+        // 获取新闻列表
+        document.querySelector('.btn1').onclick = function () {
+            axios.get('http://ajax-api.itheima.net/api/news').then((res) => {
+                console.log(res)
+            })
+        }
+        // 查询 lol 英雄列表
+            document.querySelector('.btn2').onclick = function () {
+                axios
+                    .get("https://autumnfish.cn/api/lol/search?q=提莫").then((res) => {
+                        console.log(res)
+                    })
+            }
+        // document.querySelector('.btn2').onclick = function () {
+        //     axios
+        //         .get("https://autumnfish.cn/api/lol/search", {
+        //             params:{
+        //                 q:'提莫',
+        //             }
+        //         }).then((res) => {
+        //             console.log(res)
+        //         })
+        // }
+
+    </script>
+</body>
+
+</html>

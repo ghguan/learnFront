@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="../day01/聊天机器人/css/reset.css" />
+  <link rel="stylesheet" href="../day01/聊天机器人/css/main.css" />
+  <script type="text/javascript" src="../day01/聊天机器人/lib/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="./聊天机器人/lib/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="./聊天机器人/lib/jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="./聊天机器人/lib/scroll.js"></script>
+  <title>聊天机器人</title>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- 头部 Header 区域 -->
+    <div class="header">
+      <h3>小思同学</h3>
+      <img src="img/person01.png" alt="icon" />
+    </div>
+    <!-- 中间 聊天内容区域 -->
+    <div class="main">
+      <ul class="talk_list" style="top: 0px;">
+        <li class="left_word">
+          <img src="img/person01.png" />
+          <span>你好</span>
+        </li>
+        <li class="right_word">
+          <img src="img/person02.png" />
+          <span>你好哦</span>
+        </li>
+      </ul>
+      <!-- 右侧滚动条 -->
+      <div class="drag_bar" style="display: none;">
+        <div
+             class="drager ui-draggable ui-draggable-handle"
+             style="display: none; height: 412.628px;"></div>
+      </div>
+    </div>
+    <!-- 底部 消息编辑区域 -->
+    <div class="footer">
+      <img src="img/person02.png" alt="icon" />
+      <!-- 输入框 -->
+      <input type="text" placeholder="说的什么吧..." class="input_txt" />
+      <!-- 发送按钮 -->
+      <input type="button" value="发 送" class="input_sub" />
+    </div>
+  </div>
+
+  <!-- 导入axios -->
+  <script src="../day01/lib/axios.js"></script>
+  <script>
+    // 输入框事件
+    // 获取输入框的值+判断输入内容是否满足要求+渲染页面+清空输入框
+        // 这里渲染是将新内容添加，不是覆盖，所以用appendChild添加，
+        // ==> 即创建元素，给元素innerHTML，再将元素appendChild进指定区域
+
+    // 需求
+        // 1.点击发送/回车，将输入的聊天内容渲染到页面
+            // 绑定事件，两个事件触发的事一样，我们就将这件事封装成函数，分别在绑定事件中调用即可
+// 封装函数
+    const chart = function(){
+        // 获取输入框内容
+        const inputValue = document.querySelector('.input_txt').value
+        // 判断输入内容是否满足要求, 需要去除首尾的空格后再判断
+        const value = inputValue.trim()
+        if(value !== ''){
+            // 渲染页面：创建元素，给元素添加内容（属性+结构），将元素添加到指定父元素中，完整结构实现渲染
+            // => li==>li.innerHTML==>appendChild
+            // 创建li
+            const li = document.createElement('li')
+            // 添加类名属性
+            li.className = 'right_word'
+            // 添加结构内容
+            li.innerHTML = `<img src="img/person01.png" />
+          <span>${value}</span>`
+            // 将其添加到父元素中
+            document.querySelector('.talk_list').appendChild(li)
+            // 清空输入框
+            // inputValue = '' 访问不到inputValue这个变量
+            document.querySelector('.input_txt').value = '' 
+        }
+    }
+// 两个触发事件
+
+    // 点击发送
+    document.querySelector('.input_sub').onclick = function(){
+        chart()
+    }
+    // 键盘事件：
+        // 给input框绑定
+        // 回调函数需要传参数，判断是哪个键触发事件
+    document.querySelector('.input_txt').addEventListener('keyup',function(e){
+        if(e.keyCode === 13){
+            chart()
+        }
+    })
+
+    // bug:
+    // 1.li undefined
+    // 2.appendChild()语法，（）里直接写添加的元素，不是字符串格式
+    // 3.e.keyCode 驼峰名
+    // 4.发送后清空输入框，在判断输入内容合规（if语句）后才执行逻辑，但获取输入框定义在函数（if是语句，但内部使用const声明了变量，形成了作用域）外，访问不到，需要重新声明
+    
+  </script>
+</body>
+
+</html>

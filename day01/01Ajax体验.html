@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    
+    <input type="text" class="ipt" placeholder="请输入您的问题" />
+
+    <div></div>
+    
+    <!-- 导入了 在线的js文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // input框逻辑
+        // 1. 获取输入的内容
+        // 2. 触发条件
+        // 3. 判断输入的内容是否符合要求
+            //获取元素，绑定事件
+            //输入的内容 ：去空格 并保存
+        // 4. 前后端交互写在事件函数里，事件触发交互
+            //需要引入库实现前后端交互
+      const box = document.querySelector('div')
+      document.querySelector('.ipt').onkeyup = function (e) {
+        // 限制回车触发
+        if (e.keyCode !== 13) return
+            // e是事件
+        // 去空格 并保存
+        const content = this.value.trim()
+            // this指向input框
+        // 内容非空判断 不为 空 !''->true
+        if (!content) {
+          return alert('请输入提问的内容')
+        }
+        // ajax前后端交互
+        axios({
+          url: `http://ajax-api.itheima.net/api/robot?spoken=${content}`,
+          method: 'get',
+        }).then((res) => {
+          console.log(res)
+        //   res是形参
+        //   alert(res.data.data.info.text)
+          box.innerHTML = res.data.data.info.text
+        })
+      }
+      
+
+      
+      
+    </script>
+  </body>
+</html>

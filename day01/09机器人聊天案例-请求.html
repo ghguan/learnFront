@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="../day01/聊天机器人/css/reset.css" />
+  <link rel="stylesheet" href="../day01/聊天机器人/css/main.css" />
+  <script type="text/javascript" src="../day01/聊天机器人/lib/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="./聊天机器人/lib/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="./聊天机器人/lib/jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="./聊天机器人/lib/scroll.js"></script>
+  <title>聊天机器人</title>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- 头部 Header 区域 -->
+    <div class="header">
+      <h3>小思同学</h3>
+      <img src="./聊天机器人/img/person01.png" alt="icon" />
+    </div>
+    <!-- 中间 聊天内容区域 -->
+    <div class="main">
+      <ul class="talk_list" style="top: 0px;">
+        <li class="left_word">
+          <img src="./聊天机器人/img/person01.png" />
+          <span>你好</span>
+        </li>
+        <li class="right_word">
+          <img src="./聊天机器人/img/person02.png" />
+          <span>你好哦</span>
+        </li>
+      </ul>
+      <!-- 右侧滚动条 -->
+      <div class="drag_bar" style="display: none;">
+        <div
+             class="drager ui-draggable ui-draggable-handle"
+             style="display: none; height: 412.628px;"></div>
+      </div>
+    </div>
+    <!-- 底部 消息编辑区域 -->
+    <div class="footer">
+      <img src="./聊天机器人/img/person02.png" alt="icon" />
+      <!-- 输入框 -->
+      <input type="text" placeholder="说的什么吧..." class="input_txt" />
+      <!-- 发送按钮 -->
+      <input type="button" value="发 送" class="input_sub" />
+    </div>
+  </div>
+
+  <!-- 导入axios -->
+  <script src="../day01/lib/axios.js"></script>
+  <script>
+
+    // 需求
+        // 1.点击发送/回车，将输入的聊天内容渲染到页面
+        // 2.点击发送/回车，发起请求，渲染页面
+            
+  //渲染函数
+    const chart = function(){
+    // 1.点击发送/回车，将输入的聊天内容渲染到页面
+
+        // 获取输入框内容
+        const inputValue = document.querySelector('.input_txt').value
+        // 判断输入内容是否满足要求, 需要去除首尾的空格后再判断
+        const value = inputValue.trim()
+        if(value !== ''){
+            // 渲染页面：创建元素，给元素添加内容（属性+结构），将元素添加到指定父元素中，完整结构实现渲染
+            // => li==>li.innerHTML==>appendChild
+            // 创建li
+            const li = document.createElement('li')
+            // 添加类名属性
+            li.className = 'right_word'
+            // 添加结构内容
+            li.innerHTML = `<img src="./聊天机器人/img/person02.png" />
+          <span>${value}</span>`
+            // 将创建的元素添加到父元素中
+            document.querySelector('.talk_list').appendChild(li)
+            // 清空输入框
+            // inputValue = '' 访问不到inputValue这个变量
+            document.querySelector('.input_txt').value = '' 
+        }
+
+    // 2.点击发送/回车，发起请求，渲染页面
+        axios.get('http://www.liulongbin.top:3006/api/robot',{
+          params:{
+            spoken:value,
+          }
+          // 这没有形成作用域，所以可以访问到value
+        }).then((res)=>{
+          // console.log(res)
+          // 渲染页面 ==>创建元素==>添加内容（属性+结构+内容）==>添加到父元素
+          const rli = document.createElement('li')
+          rli.className = 'left_word'
+          rli.innerHTML = `<img src="./聊天机器人/img/person01.png" />
+          <span>${res.data.data.info.text}</span>`
+          document.querySelector('.talk_list').appendChild(rli)
+        }).catch((error)=>{          
+          console.log(error)
+          alert('请求出错')
+        })
+
+    }
+
+  
+  // 两个触发事件
+    // 点击发送
+    document.querySelector('.input_sub').onclick = function(){
+        chart()
+    }
+    // 键盘事件
+    document.querySelector('.input_txt').addEventListener('keyup',function(e){
+        if(e.keyCode === 13){
+            chart()
+        }
+    })
+  </script>
+</body>
+
+</html>

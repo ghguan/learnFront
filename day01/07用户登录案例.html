@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../day01/用户登录/css/bootstrap-v4.6.0.css" />
+    <link rel="stylesheet" href="../day01/用户登录/css/login.css" />
+</head>
+
+<body>
+    <div class="login-box">
+        <div class="form-group">
+            <label for="username">Account</label>
+            <!-- 账号 -->
+            <input type="text" class="form-control" id="username" autocomplete="off" />
+            <small id="emailHelp" class="form-text text-muted">The available account is <strong>admin</strong></small>
+        </div>
+        <div class="form-group">
+            <!-- 密码 -->
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" />
+            <small id="emailHelp" class="form-text text-muted">The available password is <strong>123456</strong></small>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnLogin">Submit</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        //需求
+            // 1.输入用户名、密码
+            // 2.点击submit登录
+            // 3.根据用户名/密码的正确与否弹出不同的提示（登陆成功/失败）
+        //分析
+            // 什么时候发起请求？==> 点击submit
+            // 获取输入的值 判断是否满足要求
+                // 逻辑写在哪呢？ 
+                // 请求参数，进行判断，==> 请求参数：input.value ==> 如何获取input.value?
+
+        document.querySelector('#btnLogin').addEventListener('click', function () {
+
+            const username = document.querySelector('#username').value
+            const password = document.querySelector('#password').value
+
+            axios.post('http://ajax-api.itheima.net/api/login', {
+                // username:username,属性名：属性值，相同，可略写
+                username,
+                password,
+            }).then((res) => {
+                console.log(res)
+                alert(res.data.message)
+            }).catch((error)=>{
+                alert("登陆失败")
+            })
+        })
+
+    </script>
+</body>
+
+</html>
