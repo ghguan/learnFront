@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>案例-头像上传</title>
+    <link rel="stylesheet" href="./头像上传/lib/bootstrap-v4.6.0.css" />
+    <style>
+      .thumb-box {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .thumb {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="thumb-box">
+      <!-- 头像 -->
+      <img src="./头像上传/images/cover.jpg" class="img-thumbnail thumb" alt="" />
+      <div class="mt-2">
+        <!-- 文件选择框 -->
+        <!-- accept 属性表示可选择的文件类型 -->
+        <!-- image/* 表示只允许选择图片类型的文件 -->
+        <input
+          type="file"
+          id="iptFile"
+          accept="image/*"
+          style="display: none;"
+        />
+        <!-- 选择头像图片的按钮 -->
+        <button class="btn btn-primary" id="btnChoose">选择 & 上传图片</button>
+      </div>
+    </div>
+    <script src="./头像上传/lib/axios.js"></script>
+
+    <script>
+      // 需求
+        // 1.点击选择&上传按钮
+        // 2.判断上传文件的格式:发起请求前判断
+          // 判断字符串中是否有目标字段 indexof（）index/-1 ；includes（）true/false
+
+      // 选择文件和上传是同一个按钮？如何实现（合并选择上传按钮）
+        // 隐藏选择按钮display：none
+        // 通过js实现 隐藏按钮和合并按钮的 逻辑 ：当点击合并按钮时，选择按钮被模拟点击
+
+      // 
+      document.querySelector('#btnChoose').onclick = function(){
+        // 1.点击合并按钮，弹出文件选择
+            // 获取选择按钮,模拟点击 选择按钮 （相当于给选择按钮也绑定点击事件）
+        document.querySelector('#iptFile').click()
+      }
+      
+        // 2.监听文件选择input框的change事件
+          // 文件每改变一次，就发起一次请求
+      document.querySelector('#iptFile').onchange = function(e){
+        // new 实例 => 添加数据 => 实例作为参数整体传入
+        const fileData = new FormData()
+          // console.log(this) //input框
+          // e.target / e.currentTarget //input框
+        const img = e.target.files[0]
+          // console.log(img)
+        fileData.append('avatar',img)
+
+        if(e.target.files[0].type.includes('image')===true){
+          axios({
+            method:'post',
+            url:'http://ajax-api.itheima.net/api/file',
+            data:fileData,
+          }).then((res)=>{
+            document.querySelector('.thumb').src = res.data.data.url
+          })
+        }else{
+          alert('请选择图片文件')
+        }       
+      }
+    </script>
+
+  </body>
+</html>

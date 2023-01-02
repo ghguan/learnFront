@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>form-data</h2>
+    <input class="ipt" type="file" accept="image/*" />
+    <h2>application/json</h2>
+    <button class="json">测试登录接口</button>
+    <h2>urlencoded</h2>
+    <button class="urlencoded">测试urlencoded格式</button>
+    <script src="./lib/axios.js"></script>
+    <script>
+      // 1.测试formData
+      document.querySelector('.ipt').onchange = function (e) {
+        // 调用头像上传接口 提交图片
+        const data = new FormData()
+        data.append('avatar', e.target.files[0])
+        axios({
+          url: 'http://ajax-api.itheima.net/api/file',
+          method: 'post',
+          data: data,
+        }).then(res => {
+          console.log('res:', res)
+        })
+      }
+      // 2.测试application/json
+      document.querySelector('.json').onclick = function () {
+        axios
+          .post('http://ajax-api.itheima.net/api/login', {
+            username: 'admin',
+            password: '123456',
+          })
+          .then(res => {
+            console.log('res:', res)
+          })
+      }
+      // 3.测试 application/x-www-form-urlencoded
+      document.querySelector('.urlencoded').onclick = function () {
+        axios({
+          url: 'http://ajax-api.itheima.net/api/data',
+          method: 'post',
+          data: 'name=jack&age=18&friend=rose',
+        }).then(res => {
+          console.log('res:', res)
+        })
+      }
+    </script>
+  </body>
+</html>

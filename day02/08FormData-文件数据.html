@@ -29,6 +29,9 @@
             // e.target.files 就是上传的文件数据 是一个伪数组
             // e.target.files[index]即可获取对应文件数据
             console.log(e.target.files[0])
+            // 判断this，e.currentTarget的指向，也能获取
+            console.log(this.files[0])
+            console.log(e.currentTarget.files[0])
 
         }
         

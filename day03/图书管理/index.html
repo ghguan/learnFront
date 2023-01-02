@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 引入 bootstrap 样式表 -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <style>
+      body {
+        padding-top: 50px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- 栅格系统 -->
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1>图书管理</h1>
+        <button
+          class="btn btn-success btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#addModal"
+        >
+          添加
+        </button>
+      </div>
+      <table
+        class="table table-bordered table-striped table-dark table-hover text-center"
+      >
+        <thead>
+          <!-- 表头行 -->
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">书名</th>
+            <th scope="col">作者</th>
+            <th scope="col">出版社</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 表格中的每一行 -->
+          <tr>
+            <th scope="row">xxx</th>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>xxx</td>
+            <td>
+              <button type="button" class="btn btn-link btn-sm btn-delete">
+                删除
+              </button>
+              <button type="button" class="btn btn-link btn-sm btn-update">
+                编辑
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--新增弹框 -->
+    <div class="modal fade" id="addModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">添加图书</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addForm" class="p-3">
+              <!-- 书名 -->
+              <div class="mb-3">
+                <label class="form-label">书名</label>
+                <input
+                  type="text"
+                  name="bookname"
+                  class="form-control"
+                  placeholder="请输入图书名称"
+                  name="bookname"
+                />
+              </div>
+              <!-- 作者 -->
+              <div class="mb-3">
+                <label class="form-label">作者</label>
+                <input
+                  type="text"
+                  name="author"
+                  class="form-control"
+                  placeholder="请输入作者名字"
+                  name="author"
+                />
+              </div>
+              <!-- 出版社 -->
+              <div class="mb-3">
+                <label class="form-label">出版社</label>
+                <input
+                  type="text"
+                  name="publisher"
+                  class="form-control"
+                  placeholder="请输入出版社名称"
+                  name="publisher"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              取消
+            </button>
+            <button type="button" class="btn btn-primary" id="addBtn">
+              确认
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 编辑弹框 -->
+    <div class="modal fade" id="editModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">编辑图书</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editForm" class="p-3">
+              <input type="hidden" name="id" />
+              <!-- 书名 -->
+              <div class="mb-3">
+                <label class="form-label">书名</label>
+                <input
+                  type="text"
+                  name="bookname"
+                  class="form-control"
+                  placeholder="请输入图书名称"
+                  name="bookname"
+                />
+              </div>
+              <!-- 作者 -->
+              <div class="mb-3">
+                <label class="form-label">作者</label>
+                <input
+                  type="text"
+                  name="author"
+                  class="form-control"
+                  placeholder="请输入作者名字"
+                  name="author"
+                />
+              </div>
+              <!-- 出版社 -->
+              <div class="mb-3">
+                <label class="form-label">出版社</label>
+                <input
+                  type="text"
+                  name="publisher"
+                  class="form-control"
+                  placeholder="请输入出版社名称"
+                  name="publisher"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              取消
+            </button>
+            <button type="button" class="btn btn-primary" id="editBtn">
+              确认
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 引入 lib 目录下的 bootstrap 和 axios -->
+    <script src="./lib/axios.js"></script>
+    <!-- 快速获取表单数据  key=value {key:value}  -->
+    <script src="./lib/form-serialize.js"></script>
+    <!-- bootstrap的js -->
+    <script src="./lib/bootstrap.min.js"></script>
+    <script>
+      // 0 设置基地址
+      axios.defaults.baseURL = 'http://ajax-api.itheima.net'
+
+      // 获取数据的方法
+      function getBooks() {
+        axios({
+          url: '/api/books',
+          // method:"get", //可以省略
+        }).then((res) => {
+          // arr->htmlarr->html->innerHTML
+          const html = res.data.data
+            .map((v) => {
+              return `
+              <tr>
+                <th scope="row">${v.id}</th>
+                <td>${v.bookname}</td>
+                <td>${v.author}</td>
+                <td>${v.publisher}</td>
+                <td>
+                  <button data-id="${v.id}" type="button" class="btn btn-link btn-sm btn-delete">删除</button>
+                  <button data-id="${v.id}"  type="button" class="btn btn-link btn-sm btn-update">编辑</button>
+                </td>
+              </tr>
+            `
+            })
+            .join('')
+          document.querySelector('tbody').innerHTML = html
+        })
+      }
+      // 01 渲染列表
+      window.onload = function () {
+        // 默认获取图书
+        getBooks()
+      }
+
+      // 通过BootStrap提供的方法获取新增的弹框
+      const addModal = new bootstrap.Modal(document.querySelector('#addModal'))
+      // 02 点击新增里面的确认
+      document.querySelector('#addBtn').onclick = function () {
+        // 获取表单数据 +提交数据
+        const data = serialize(document.querySelector('#addForm'), {
+          hash: true,
+        })
+        console.log('data:', data)
+        axios({
+          url: '/api/books',
+          method: 'post',
+          data, // data:data
+        }).then((res) => {
+          // console.log('res:', res)
+          // 关闭弹框
+          addModal.hide()
+          // 清空表单 reset 是form元素自带的一个方法
+          // 可以用来清空表单中的值
+          document.querySelector('#addForm').reset()
+          // 更新页面 服务器变了本地需要重新获取一次
+          getBooks()
+        })
+      }
+
+      // 03 删除 事件委托绑定
+      // addEventListener 可以绑定多个
+      document.querySelector('tbody').addEventListener('click', function (e) {
+        // console.log('click-tbody')
+        // console.log('e.target:', e.target)
+        // console.log(' e.target.classList:', e.target.classList)
+        // classList.contains 判断类名是否存在
+        // 存在 true
+        // 不存在 false
+        // console.log(e.target.classList.contains('btn-delete'))
+
+        // 只有点击删除再触发
+        if (e.target.classList.contains('btn-delete') === true) {
+          // console.log('点了删除')
+          // 获取保存的id
+          console.log(' e.target.dataset:', e.target.dataset)
+          const id = e.target.dataset.id
+          // 发请求
+          axios({
+            url: `/api/books/${id}`,
+            method: 'delete',
+          }).then((res) => {
+            // console.log(res)
+            // 提示用户
+            alert('删除成功')
+            // 更新页面
+            getBooks()
+          })
+        }
+      })
+
+      // 04 进入编辑状态
+      const editModal = new bootstrap.Modal(
+        document.querySelector('#editModal')
+      )
+      document.querySelector('tbody').addEventListener('click', function (e) {
+        // 点击 编辑
+        if (e.target.classList.contains('btn-update') === true) {
+          // console.log('点了编辑')
+          const id = e.target.dataset.id
+          // console.log('id:', id)
+          // 调用接口获取数据
+          axios({
+            url: `/api/books/${id}`,
+            method: 'get',
+          }).then((res) => {
+            // console.log('res:', res)
+            // 弹框
+            editModal.show()
+            const data = res.data.data
+            // 填充内容
+            document.querySelector('#editForm [name=bookname]').value =
+              data.bookname
+            document.querySelector('#editForm [name=author]').value =
+              data.author
+            document.querySelector('#editForm [name=publisher]').value =
+              data.publisher
+            // id也需要保存起来 修改需要用到id
+            // id input type=hidden 不让用户看到 但是保存了数据
+            document.querySelector('#editForm [name=id]').value = data.id
+          })
+        }
+      })
+
+      // 05保存修改
+      document.querySelector('#editBtn').onclick = function () {
+        // console.log('保存')
+        // 获取表单的数据
+        const data = serialize(document.querySelector('#editForm'), {
+          hash: true,
+        })
+        console.log('data:', data)
+
+        // 调用接口
+        axios({
+          url: `/api/books/${data.id}`,
+          method: 'put',
+          data, // data:data
+        }).then((res) => {
+          // console.log('res:', res)
+          alert(res.data.message)
+          // 关闭弹框
+          editModal.hide()
+          // 更新页面
+          getBooks()
+        })
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="btn1">get</button>
+    <button class="btn2">post</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // document.querySelector('.btn1').onclick = function () {
+        //     axios({
+        //         url: 'http://ajax-api.itheima.net/api/news',
+        //         method: 'get',
+        //     }).then(res => {
+        //         console.log(res)
+        //     })
+        // }
+
+        axios.defaults.baseURL='http://ajax-api.itheima.net'
+        document.querySelector('.btn1').onclick = function () {
+            axios({
+                url: '/api/news',
+                method: 'get',
+            }).then(res => {
+                console.log(res)
+            })
+        }
+        document.querySelector('.btn2').onclick = function () {
+            axios({
+                url: '/api/login',
+                method: 'post',
+                data:{
+                    username:'admin',
+                    password:'123456',
+                }
+            }).then(res => {
+                console.log(res)
+            })
+        }
+    </script>
+</body>
+
+</html>

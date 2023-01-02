@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>      
+    <input type="file" accept="image/*">
+    <button type="submit">上传</button>
+    
+    <img src="" alt="">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 接口文档https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-25261959
+        // 需求
+            // 1. 选择上传的文件，点击上传，发起请求提交数据
+                // 请求成功，接口会返回上传的数据==>一个在线地址，访问地址可以查看到上传的文件
+
+            // 2. 请求成功，将上传的文件，渲染到页面
+                // 接口后端，将上传的文件，转换成了一个网络在线地址，再返回给我们，获取返回的地址，将文件渲染到页面--请求该接口的作用
+
+        // 分析
+            // 1.点击上传按钮，获取input框内容，传参发起请求  
+                // 上传文件 => FormData()
+
+        // 点击事件,执行上传
+        document.querySelector('button').onclick = function(){
+            // 1.实例化FormData,默认为空，需要添加数据
+            const fileData = new FormData()
+                // 返回值的是一个对象，{key：value}
+            // 2.追加数据:点击上传==>获取input框中的内容==>添加到FormData中
+                // input框的内容如何获取？普通数据：input框.value 同理==>  文件数据： input框.files[index]
+                // console.dir(document.querySelector('input'))
+            const img = document.querySelector('input').files[0]
+                // 向FormData中添加数据( key,value )
+                // key==接口参数名 ; value == input框中的内容（需要获取）
+            fileData.append('avatar',img)
+                // fileData是一个对象{key：value}
+                // 为了直接将fileData作为整体传参去发起请求，key设置为接口文档中的传参的参数名
+            // 3.发起请求
+            axios({
+                method:'post',
+                url:'http://ajax-api.itheima.net/api/file',
+                data:fileData,
+                    // 整体传参
+            }).then((res)=>{
+                // console.log(res)找到所需的数据 ==> res.data.data.url
+                    // 通过js创建标签元素，渲染页面
+                    // 创建标签=> 添加内容(添加属性值，内置属性：直接 .属性名 = 属性值 添加；自定义属性要先添加自定义属性，再添加属性值) =>添加到父元素
+                    // const img = document.createElement('img')
+                    // document.querySelector('img').src = res.data.data.url
+                    // document.querySelector('body').appendChild(img)
+                // 渲染页面
+                document.querySelector('img').src = res.data.data.url
+            })
+        }
+        //将 图片 渲染到页面的逻辑：img标签的src属性
+    </script>
+
+</body>
+
+</html>
