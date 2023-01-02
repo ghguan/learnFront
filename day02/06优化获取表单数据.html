@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="http://ajax-api.itheima.net/api/login" method="post">
+        <input type="text" name="username" placeholder="请输入用户名" />
+        <br />
+        <input type="password" name="password" placeholder="请输入密码" />
+        <br />
+        <button>提交</button>
+    </form>
+    <!-- 1.引入serialize.js文件 -->
+    <script src="./英雄百科/lib/form-serialize.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 一次性拿取form表单中所有带有name属性的input值==> input框随便加,js代码也不需要修改
+            // 通过调用 form-serialize.js文件在全局挂载的函数 serialize()，参数是form元素(具体获取得到)
+                // ==>前提是先获取form元素，不是真的直接form!
+            // 用变量接收调用函数返回的结果
+                // serialize()调用的结果是字符串 serialize(from) ==> "input1.name=input1.value&input2.name=input2.value"=>"属性名1=属性值1&属性名2=属性值2"
+                // serialize()调用结果也可自行配置形参，返回结果为对象，serialize(from，{hash：true}) ==> {input1.name:'input1.value',input2.name:'input2.value'} =>{属性名1：'属性值1',属性名2：'属性值2' }
+    
+            document.querySelector('form').addEventListener('submit',function(e){
+                e.preventDefault()
+    // 2.获取form表单元素
+                const form = document.querySelector('form')
+    // 3.用变量接收函数返回的结果
+            // 返回字符串
+                const strData = serialize(form)
+                // console.log(strData) //username=admin&password=123
+            // 返回对象
+                const objData = serialize(form,{hash:true}) 
+                // console.log(objData)//{username: 'admin', password: '123'}
+                axios({
+                    method:'post',
+                    url:'http://ajax-api.itheima.net/api/data',
+                    data:objData,
+                    // data:{
+                    //     // 获取input值
+                    //     username:document.querySelector('[name=username]').value,
+                    //     password:document.querySelector('[name=password]').value,
+                    // },
+                }).then((res)=>{
+                    console.log(res)
+                })
+            })
+    </script> 
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./英雄百科/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./英雄百科/css/index.css" />
+    <title>英雄百科</title>
+  </head>
+
+  <body>
+    <div class="main">
+      <img class="cover" src="https://img.crawler.qq.com/lolwebschool/0/JAutoCMS_LOLWeb_f6416138ae858f73e2ca40a11587e17f/0" />
+      <div class="hero-container">
+        <input type="text" class="search" placeholder="检索" />
+        <ul class="list">
+          <li>
+            <img src="http://game.gtimg.cn/images/lol/act/img/champion/Annie.png" alt="" />
+            <p>安妮</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="infoModal" class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">黑暗之女安妮</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="info">
+              <img src="http://game.gtimg.cn/images/lol/act/img/champion/Annie.png" class="icon img-thumbnail" alt="..." />
+              <div class="progress-box">
+                <div class="progress">
+                  <div class="attack progress-bar bg-success" style="width: 25%">攻击:</div>
+                </div>
+                <div class="progress">
+                  <div class="defense progress-bar bg-info" role="progressbar" style="width: 50%">防御:</div>
+                </div>
+                <div class="progress">
+                  <div class="magic progress-bar bg-warning" role="progressbar" style="width: 75%">魔法:</div>
+                </div>
+                <div class="progress">
+                  <div class="difficulty progress-bar bg-danger" role="progressbar" style="width: 100%">难度:</div>
+                </div>
+              </div>
+            </div>
+            <p>
+              拥有危险夺命的能力，却长着一幅小大人儿的可爱模样，这就是掌握深不可测占火魔法的女孩——安妮。安妮生活在诺克萨斯北边的山脚下，但即便是在这种地方，她也依然是魔法师中的异类。她与火焰的紧密关系与生俱来——最初那些火焰是伴随着喜怒无常的冲动情绪出现的，后来她学会了如何掌握这些“好玩的小把戏”。其中，安妮最喜欢的就是她召唤亲爱的泰迪熊提伯斯——那头狂野的守护火兽。如今安妮已经迷失在了永恒的天真里，她在黑暗森林中游荡，寻觅着能陪自己玩耍的人。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <script src="./英雄百科/lib/axios.js"></script>
+  <script src="./英雄百科/lib/bootstrap.min.js"></script>
+  <script>
+    // 需求
+        // 1.一进页面就渲染==>一进页面就发起请求，获取数据，渲染
+            // 如何一进页面就触发==>页面监听事件
+        // 2.检索==>输入内容，点击回车，发起请求，获取数据，渲染
+                // ==>获取输入内容，绑定事件，传参发起请求，响应获取数据，渲染页面
+        // 两次渲染调用的是同一个接口，区别在于传参，参数为空或不传参，获取全部数据；有参数，则匹配参数响应数据
+            // ==> 封装为一个请求函数，传参调用
+
+            // 如何将输入的内容作为参数传入函数呢？
+                // 获取输入内容==> input框.value ==> 绑定事件的回调函数中this指向==>input框
+                // ==绑定事件中 this.value === 输入的内容 ==> this.value 作为实参 传入请求函数
+        // 接口文档：https://gitee.com/westblueflower/testApi
+    
+    // 请求函数
+        const getHero = function(val){
+            axios({
+                methos:'get',
+                url:'https://autumnfish.cn/api/lol/search',
+                params:{
+                    q:val,
+                    // 形参，直接用，不是字符串，实参才定义参数的数据类型
+                }
+            }).then((res)=>{
+                console.log(res) // ==>res.data.data
+            // 数据列表渲染逻辑
+                const li = res.data.data.map(item=>{
+                    return `<li>
+                                <img src="${item.icon}" alt="" />
+                                <p>${item.title}</p>
+                            </li>
+                            `
+                })
+                document.querySelector('.list').innerHTML = li.join('')
+            // 聊天页面渲染逻辑
+                //     const li = document.createElement('li')
+                //     li.innerHTML = `<img src=${res.data.data.icon} alt="" />
+                // <p>${res.data.data.title}</p>`
+                //     document.querySelector('.list').appendChild(li)
+            })
+        }
+            
+
+    // 1.进页面
+        // 页面监听
+        window.onload = function(){
+            getHero('')
+        }   
+    // 2.检索
+        // 键盘事件
+        document.querySelector('.search').addEventListener('keyup',function(e){
+            // 点击回车
+            if(e.keyCode === 13){
+                getHero(this.value)
+            }
+        })
+
+        // bug
+        // 1.渲染页面逻辑之获取数据是一个数组，遍历数组生成页面结构,再填充到页面上
+            // 和聊天渲染页面的逻辑不同：innerHTML = 字符串 ；appendChild(标签元素)
+  </script>
+  </body>
+</html>

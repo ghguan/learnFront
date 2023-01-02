@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form action="http://ajax-api.itheima.net/api/data" method="post">
+    <!-- action 放接口地址；method 放请求方式 ，点击submit向接口发起请求 -->
+        <input type="text" name="username" placeholder="请输入用户名" />
+        <br />
+        <input type="password" name="password" placeholder="请输入密码" />
+        <br />
+        <!-- 提交按钮 -->
+        <input type="submit"> 
+    </form>
+    <!-- 请求数据在哪查看？-->
+        <!-- 点击提交，页面会跳转，显示接口返回的内容 -->
+    <!-- 为什么参数输入正确，还是返回失败 -->
+        <!--因为其实未成功传参，提交成功的话，传给接口什么数据，就会返回什么数据，可以看到返回的data为空，说明没有成功传数据 -->
+    <!-- 如何提交数据 -->
+        <!--实现向接口传数据，给每个数据加一个name属性即可，name的值就是传给接口的属性字段==> name的值是属性名，输入框的数据是属性值 -->
+    <!-- form可以实现数据交互，但是1.会刷新页面且2.发生了跳转，3.用户体验不好，不常用form表单提交数据，常用form表单+ajax进行数据交互 -->
+</body>
+
+</html>

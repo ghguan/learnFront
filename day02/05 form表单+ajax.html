@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="http://ajax-api.itheima.net/api/login" method="post">
+        <!-- action 放接口地址；method 放请求方式 ，点击submit向接口发起请求 -->
+        <!-- 不写 action和method，并不会阻止提交，不会发生跳转但还是会刷新页面-->
+        <input type="text" name="username" placeholder="请输入用户名" />
+        <!--  input历史值默认打开，关闭设置属性autocomplete='off'-->
+        <br />
+        <input type="password" name="password" placeholder="请输入密码" />
+        <br />
+        <!-- 提交按钮 -->
+        <button>提交</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 阻止默认行为
+        // 按钮点击事件
+        // document.querySelector('button').addEventListener('click',function(e){
+        //     e.preventDefault() 
+        // })
+        // 表单提交事件
+        document.querySelector('form').addEventListener('submit',function(e){
+            e.preventDefault()
+            axios({
+                method:'post',
+                url:'http://ajax-api.itheima.net/api/data',
+                data:{
+                    // 怎么获取输入的值？获取元素input框.value,如何对应input框的值-CSS选择器-属性选择器 []
+                    username:document.querySelector('[name=username]').value,
+                    password:document.querySelector('[name=password]').value,
+                },
+            }).then((res)=>{
+                console.log(res)
+            })
+        })
+
+        // bug
+        // 1.没引入axios.js
+    </script>
+</body>
+
+</html>

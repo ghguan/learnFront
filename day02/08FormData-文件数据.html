@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 上传文件 -->
+    <input type="file">
+    <!-- 上传多个文件 multiple属性 -->
+    <input type="file" multiple>
+    <!-- 推荐上传的文件格式 accept属性 -->
+        <!-- 语法：多个文件格式用逗号隔开，文件格式为 .xx 文件格式 -->
+        <!-- 表示允许上传哪些文件格式的文件 -->
+        <!-- 仅推荐上传格式，并不能限制用户上传别的文件，用户可手动选择其他文件格式的文件 -->
+    <input class="input" type="file" accept="image/*,.pdf">
+        <!-- 表示，允许所有图片格式和pdf格式的文件 -->
+    
+    <!--  如何获取文件input框的文件数据？ -->
+        <!-- 监听input框值的变化事件，值变化就执行函数  -->
+    <!-- 获取数据后，即可提交数据，将其传给接口 -->
+    <script>
+        // 监听input框值的变化事件，值变化就执行函数
+        document.querySelector('.input').onchange = function(e){
+            console.log(e) 
+            // e.target触发的dom元素input框
+            // e.target.files 就是上传的文件数据 是一个伪数组
+            // e.target.files[index]即可获取对应文件数据
+            console.log(e.target.files[0])
+
+        }
+        
+    </script>
+</body>
+</html>

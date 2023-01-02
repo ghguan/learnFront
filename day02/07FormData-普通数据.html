@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    // FormData
+        // 作用:通过接口向服务端传文件(不管是文件格式,还是普通格式的数据都可存)
+        // 可以将存起来的数据和ajax结合进行数据提交 
+        // 浏览器内置对象=>不需要引入使用=>使用方式:new一个 => 实例化一个对象 使用
+        const data = new FormData()
+        // 添加普通数据,用原型上的append()方法
+        data.append('name','奥特曼')
+        data.append('done','打小怪兽')
+        // 查看数据
+        data.get('name')
+        console.log(data.get('name'))
+
+    </script>
+</body>
+</html>
