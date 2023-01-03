@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const p = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // console.log(1)
+                // 因为.then()接收resolve()传的参数，可以将打印逻辑写在.then()中
+                resolve(1)
+            }, 1000)
+        }).then((res) => {
+            // res为resolve()传的参数
+            console.log(res)
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(2)
+                }, 2000)
+            })
+            // 返回一个promise，就能继续接收resolve，在此次异步执行后再执行下一步
+        }).then((res)=>{
+            console.log(res)
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(3)
+                }, 3000)
+            })
+        }).then((res)=>{
+            console.log(res)
+            // 最后以.then结尾
+        })
+
+    </script>
+</body>
+
+</html>

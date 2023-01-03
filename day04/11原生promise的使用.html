@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 1.new一个实例
+        const p = new Promise((res,err)=>{
+            // 请求成功，执行参数1函数，返回结果传入.tnen()并执行
+            res('成功')
+            // 请求失败，执行参数2函数,返回结果传入.catch()并执行
+            // err('失败')
+             // 只能执行其中一个
+
+        }).then((res1)=>{
+            console.log(res1)
+        }).catch((err1)=>{
+            console.log(err1)
+        })
+    </script>
+</body>
+</html>

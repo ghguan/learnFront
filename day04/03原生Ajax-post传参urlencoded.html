@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>post传参-urlencoded</button>
+    <script>
+        // 接口文档https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-25261816
+            // 请求参数
+            // Body 参数(application/x-www-form-urlencoded)
+            // => urlencoded ==> 传参格式为字符串 "key=value&key=value"
+
+        // 1.传参
+        // 2.修改Content-Type的内容 ==> 添加请求头
+        document.querySelector('button').onclick = function () {
+            // 1.实例化异步对象
+            const xhr = new XMLHttpRequest()
+            // 2.设置请求的 地址 和方法
+            xhr.open('post', 'http://ajax-api.itheima.net/api/data')
+                //(2)设置请求头==>接口才能返回我们传的数据
+            xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+            // 3.注册回调函数 服务器响应内容回来之后触发
+            xhr.addEventListener('load', function () {
+                console.log(xhr.response)
+            })
+            // 4.发送请求
+                // (1)post请求传参位置在send()里
+            xhr.send('username=admin&pasword=12345')
+        }
+
+    </script>
+</body>
+
+</html>

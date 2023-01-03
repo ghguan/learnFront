@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./分类导航/css/index.css" />
+</head>
+
+<body>
+    <div class="container">
+        <ul class="top">
+            <!-- 基础模板 -->
+            <!-- <li>
+          <a href="javascript:;">首页</a>
+          <ul class="sub">
+            <li>
+              <a href="javascript:;">
+                <span>砂锅厨具</span>
+                <img src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView" alt="">
+              </a>
+            </li>
+          </ul>
+        </li> -->
+        </ul>
+    </div>
+    <script src="./分类导航/axios.js"></script>
+    <script>
+        // 接口文档https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-25605138
+        // 基地址
+        axios.defaults.baseURL = 'http://ajax-api.itheima.net'
+        // 1.发起请求
+        // 什么时候请求
+        // 2.响应请求
+        // 获取到的数据，怎么处理
+
+        // 一进页面就渲染 ==> 页面监听事件
+        window.onload = function () {
+            axios({
+                url: '/api/category/top',
+                method: 'get',
+            })
+            .then((res) => {
+                // 获取到一级导航的数据 ==> 每个一级导航也要发起请求
+                    // 遍历目标数组，每个一级导航要发起请求
+                const arr = res.data.data.map((item) => {                    
+                    return axios({
+                        url: '/api/category/sub',
+                        params: {
+                            id: item.id
+                        }
+                    })
+                })
+                // map()返回改造后的数组，新数组，每一项是一个axios请求==Promise
+                // console.log('arr',arr) 
+                // 数据全部请求到了再一起渲染页面
+                Promise.all(arr).then((res) => {
+                    console.log('res九次请求的结果', res)
+                    // 渲染页面
+                        // 模板字符串内的${ }里可以书写js代码
+                        // 二级导航的html结构，通过js逻辑（同理一级导航逻辑）
+                        // =>获取数组转字符串和一级导航拼接一起渲染到页面
+                    document.querySelector('.top').innerHTML = res.map((item1) => {
+                        return `<li>
+                                    <a href="javascript:;">${item1.data.data.name}</a>
+                                    <ul class="sub">
+                                        ${
+                                            item1.data.data.children.map((item2) => {
+                                                return `<li>
+                                                            <a href="javascript:;">
+                                                                <span>${item2.name}</span>
+                                                                <img src=${item2.picture} alt="">
+                                                            </a>
+                                                        </li>`
+                                            }).join('')
+                                        }
+            
+                                    </ul>
+                                </li>`
+                    }).join('')
+                })
+            })
+        }
+    </script>
+
+</body>
+
+</html>

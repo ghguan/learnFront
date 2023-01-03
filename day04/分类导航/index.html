@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <ul class="top">
+        <!-- 基础模板 -->
+        <!-- <li>
+          <a href="javascript:;">首页</a>
+          <ul class="sub">
+            <li>
+              <a href="javascript:;">
+                <span>砂锅厨具</span>
+                <img src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView" alt="">
+              </a>
+            </li>
+          </ul>
+        </li> -->
+      </ul>
+    </div>
+    <script src="./axios.js"></script>
+    <script>
+      axios({ url: 'http://ajax-api.itheima.net/api/category/top' })
+        .then(res => {
+          const list = res.data.data
+          const subPromiseArr = list.map(item => {
+            return axios({ url: `http://ajax-api.itheima.net/api/category/sub?id=${item.id}` })
+          })
+          return Promise.all(subPromiseArr)
+        })
+        .then(arr => {
+          // 数据加载完毕渲染
+          const html = arr
+            .map((item, i) => {
+              // 子分类列表
+              const subLis = item.data.data.children
+                .map(
+                  sub => `
+              <li>
+                <a href="javascript:;">
+                  <span>${sub.name}</span>
+                  <img src="${sub.picture}" alt="">
+                </a>
+              </li>
+            `
+                )
+                .join('')
+              // 父分类列表
+              return `
+              <li>
+                <a href="javascript:;">${item.data.data.name}</a>
+                <ul class="sub">${subLis}</ul>
+              </li>
+            `
+            })
+            .join('')
+          document.querySelector('.top').innerHTML = html
+        })
+    </script>
+  </body>
+</html>

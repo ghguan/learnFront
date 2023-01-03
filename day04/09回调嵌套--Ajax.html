@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 一进页面发起第一次请求，请求成功后，发起第二次请求，请求成功后，再发起....
+        // 第一次请求
+        const xhr = new XMLHttpRequest()
+        xhr.open('post', 'http://ajax-api.itheima.net/api/login')
+        xhr.setRequestHeader('content-type', 'application/json')
+        xhr.addEventListener('load', function () {
+            
+            // 第二次请求
+            const xhr = new XMLHttpRequest()
+            xhr.open('post', 'http://ajax-api.itheima.net/api/login')
+            xhr.setRequestHeader('content-type', 'application/json')
+            xhr.addEventListener('load', function () {
+                // 第三次请求
+                // .....
+            })
+            let obj = {
+                username: 'admin',
+                password: '123456'
+            }
+            xhr.send(JSON.stringify(obj))
+            
+        })
+        let obj = {
+            username: 'admin',
+            password: '123456'
+        }
+        xhr.send(JSON.stringify(obj))
+    </script>
+</body>
+
+</html>

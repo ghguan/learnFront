@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>测试</button>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // 接口文档https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-24999380
+        
+        document.querySelector('button').onclick = function () {
+            // 1.实例化异步对象
+            const xhr = new XMLHttpRequest()
+            // 2.设置请求的 地址 和方法
+            xhr.open('get', 'http://ajax-api.itheima.net/api/news')
+            // 3.注册回调函数 服务器响应内容回来之后触发
+            xhr.addEventListener('load', function () {
+                console.log(xhr.response)
+            })
+            // 4.发送请求
+            xhr.send()
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./分类导航/css/index.css" />
+</head>
+
+<body>
+    <div class="container">
+        <ul class="top">
+            <!-- 基础模板 -->
+            <!-- <li>
+          <a href="javascript:;">首页</a>
+          <ul class="sub">
+            <li>
+              <a href="javascript:;">
+                <span>砂锅厨具</span>
+                <img src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView" alt="">
+              </a>
+            </li>
+          </ul>
+        </li> -->
+        </ul>
+    </div>
+    <script src="./分类导航/axios.js"></script>
+    <script>
+        // 接口文档https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-25605138
+        axios.defaults.baseURL = 'http://ajax-api.itheima.net'
+        // 1.发起请求
+            // 什么时候请求
+        // 2.响应请求
+            // 获取到的数据，怎么处理
+        window.onload = function () {
+            axios({
+                url: '/api/category/top',
+                method: 'get',
+            }).then((res) => {
+                const arr = res.data.data.map((item) => {
+                    // 每个一级导航也要发起请求
+                    return axios({
+                        url:'/api/category/sub',
+                        params:{
+                            id:item.id
+                        }
+                    })
+                })
+                // console.log('arr',arr) //数组，每一项是一个Promise
+                Promise.all(arr).then((res)=>{
+                    // console.log('res九次请求的结果',res)
+                })
+            })
+        }
+    </script>
+
+</body>
+
+</html>

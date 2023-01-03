@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const myAxios = function(option){            
+            // myAxios()传入的参数是对象
+            // 可利用解构赋值，传参
+            // const {url,method} = option
+            // 设置参数默认值
+            // post传参
+            const {url,method='get',data} = option
+            return new Promise((resolve,reject)=>{
+                const xhr = new XMLHttpRequest()
+                xhr.open(method,url)
+                // 设置数据格式，添加请求头
+                xhr.setRequestHeader('content-type','application/json')
+                xhr.addEventListener('load',function(){
+                    resolve(JSON.parse(xhr.response))
+                })
+                xhr.send(JSON.stringify(data))
+            })
+        }
+        // post传参
+            // 在send()传参，注意参数的数据格式
+        myAxios({
+            url:'http://ajax-api.itheima.net/api/books',
+            method:'post',
+            data:{
+                bookname:'123',
+                author:'234',
+                publisher:'567'
+            }
+        }).then((res)=>{console.log(res)})
+        // 1.传参位置
+        // 2.参数数据格式
+        // 3.如何传参 ==> 解构赋值
+    </script>
+</body>
+</html>

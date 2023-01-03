@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const timePromise = function (delay) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(`延时${delay}秒`)
+                }, delay * 1000)
+            })
+        }
+
+        const p1 = timePromise(1)
+        const p2 = timePromise(2)
+        const p3 = timePromise(3)
+        const p4 = timePromise(4)
+        const p5 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject('失败')
+            }, 500);
+        })
+
+        const pp3 = Promise.race([p1,p2,p3,p4]).then((res)=>{console.log(1,res)}).catch((err)=>{console.log(2,err)})
+        // 有完成并成功的就走进.then，传入第一个完成的结果
+        const pp4 = Promise.race([p1,p2,p3,p4,p5]).then((res)=>{console.log(3,res)}).catch((err)=>{console.log(4,err)})
+        // 以第一个完成的Promise执行结果为准，第一个完成的是失败的，就走进失败，第一个完成的是成功的，就走进成功        
+    </script>
+</body>
+
+</html>

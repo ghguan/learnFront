@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        //axios是基于Promise封装的Ajax的请求库
+        // promise 是一个对象 ==> 可以利用链式方式，解决回调嵌套问题
+        const axiosRes = axios({
+            url:'http://ajax-api.itheima.net/api/news'
+        }).then().catch()
+        console.log(axiosRes) //Promise对象(对象身上有很多方法，属性)
+    </script>
+</body>
+</html>

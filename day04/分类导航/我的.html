@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <ul class="top">
+        <!-- 基础模板 -->
+        <li>
+          <a href="javascript:;">首页</a>
+          <ul class="sub">
+            <li>
+              <a href="javascript:;">
+                <span>砂锅厨具</span>
+                <img
+                  src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView"
+                  alt=""
+                />
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <script src="./axios.js"></script>
+    <script>
+      window.onload = function () {
+        axios({
+          url: 'http://ajax-api.itheima.net/api/category/top',
+        }).then((res) => {
+          console.log('res', res.data.data)
+          const arr = res.data.data.map((item) => {
+            return axios({
+              url: 'http://ajax-api.itheima.net/api/category/sub',
+              params: {
+                id: item.id,
+              },
+            })
+          })
+          // console.log('arr', arr)
+          Promise.all(arr).then((twoRes) => {
+            console.log('res九次请求的结果', twoRes)
+            const str = twoRes
+              .map((v) => {
+                return `<li>
+                  <a href="javascript:;">${v.data.data.name}</a>
+                  <ul class="sub">
+                  ${v.data.data.children
+                    .map((twoItem) => {
+                      return ` <li>
+                      <a href="javascript:;">
+                        <span>${twoItem.name}</span>
+                        <img
+                          src="${twoItem.picture}"
+                          alt=""
+                        />
+                      </a>
+                    </li>`
+                    })
+                    .join('')}
+                  </ul>
+                </li>`
+              })
+              .join('')
+            document.querySelector('.top').innerHTML = str
+          })
+        })
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // get请求
+        const p1 = axios({
+            url:'http://ajax-api.itheima.net/api/news'
+        })
+        const p2 = axios({
+            url:'http://ajax-api.itheima.net/api/books'
+        })
+
+        // 都请求成功再渲染页面
+        Promise.all([p1,p2]).then((res)=>{
+            console.log(res)
+            // 打印数组，两项，分别为两个axios请求的数据
+            // 渲染页面
+        })
+    </script>
+</body>
+</html>

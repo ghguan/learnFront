@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button class="btn1">get</button>
+    <button class="btn2">get传参</button>
+    <button class="btn3">post传参-urlencoded</button>    
+    <button class="btn4">post传参-JSON</button>
+    <button class="btn5">获取图书</button>
+    <button class="btn6">添加图书</button>
+    <button class="btn7">修改图书</button>
+    <button class="btn8">删除图书</button>
+
+    <script>
+        // myAxios
+        const myAxios = function(option){
+            const {method='get',url,data}=option
+            return new Promise((resolve,reject)=>{
+                const xhr = new XMLHttpRequest()
+                xhr.open(method,url)
+                xhr.setRequestHeader('content-type','application/json')
+                xhr.addEventListener('load',function(){
+                    resolve(JSON.parse(xhr.response))
+                    // resolve(xhr.response)
+                })
+                xhr.send(JSON.stringify(data))
+            })
+        }
+
+        document.querySelector('.btn1').onclick = function(){
+            myAxios({
+                url:'http://ajax-api.itheima.net/api/news',
+            }).then((res)=>{console.log(res)})
+        }
+        document.querySelector('.btn2').onclick = function(){
+            myAxios({
+                url:'http://ajax-api.itheima.net/api/robot?spoken=你好'
+            }).then((res)=>{console.log(res)})
+        }
+        // 参数为字符串，封装的myAxios()中的设置数据格式需要修改
+        document.querySelector('.btn3').onclick = function(){
+            myAxios({
+                method:'post',
+                url:'http://ajax-api.itheima.net/api/data',
+                data:'username=admin&password=345'
+            }).then((res)=>{console.log(res)})
+        }
+        document.querySelector('.btn4').onclick = function(){
+            myAxios({
+                method:'post',
+                url:'http://ajax-api.itheima.net/api/login',
+                data:{
+                    username:'admin',
+                    password:'123456'
+                }
+            }).then((res)=>{console.log(res)})
+        }
+        document.querySelector('.btn5').onclick = function(){
+            myAxios({
+                url:'http://ajax-api.itheima.net/api/books',
+            }).then((res)=>{console.log(res)})
+        }
+        document.querySelector('.btn6').onclick = function(){
+            myAxios({
+                url:'http://ajax-api.itheima.net/api/books',
+                method:'post',
+                data:{
+                    bookname:'123',
+                    author:'345',
+                    publisher:'234'
+                }
+            }).then((res)=>{console.log(res)})
+        }
+        document.querySelector('.btn7').onclick = function(){
+            myAxios({
+                url:'http://ajax-api.itheima.net/api/books/51590',
+                method:'put',
+                data:{
+                    bookname:'123',
+                    author:'345',
+                    publisher:'234'
+                }
+            }).then((res)=>{console.log(res)})
+        }
+        document.querySelector('.btn8').onclick = function(){
+            myAxios({
+                url:'http://ajax-api.itheima.net/api/books/51590',
+                method:'delete',    
+            }).then((res)=>{console.log(res)})
+        }
+        
+
+        // 参数--字符串 语法不会
+    </script>
+</body>
+</html>

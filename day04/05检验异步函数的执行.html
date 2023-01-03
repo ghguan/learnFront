@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 异步函数的执行，由于是异步的，不会阻塞主线程代码的执行
+        console.log(1)
+        setTimeout(()=>{
+            console.log(2)
+        },0)
+        console.log(3)
+        // 1 3 2
+        // 主线程--从上往下执行 ，异步任务等待执行
+        // 先将同步任务执行完毕后，再执行异步任务
+
+    </script>
+    
+</body>
+</html>
