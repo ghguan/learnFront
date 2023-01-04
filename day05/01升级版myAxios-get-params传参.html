@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const myAxios = function(option){
+            // 1. 解构赋值==>传参
+            let {url,method='get',data,params}=option
+                //url === http://ajax-api.itheima.net/api/robot?spoken=你好
+            // 2. 赋值参数==> 拼接url+params ==> 只有get传参才拼接
+            if(method==='get'){
+                // (1). 声明一个空数组==>接收参数的键值对
+                let arr = []
+                // (2). 遍历参数对象，将每一项添加为数组,每一项的格式为 key=value
+                for(let key in params){
+                    // console.log(key) 
+                    // console.log(params[key])
+                    arr.push(`${key}=${params[key]}`)
+                    // console.log(arr)                                                                  
+                }
+                // (3). 将数组转换为字符串，每一项由&拼接
+                // console.log(arr.join('&'))  
+                // (4). 将url 与 params转换的字符串拼接 由?连接
+                url = url + `?${arr.join('&')}` 
+                // console.log(url)                     
+            }
+            // 3. 返回Promise()，实现myAxios的链式调用                
+            return new Promise((resolve,reject)=>{                
+                const xhr = new XMLHttpRequest()
+                xhr.open(method,url)
+                xhr.setRequestHeader('content-type','application/json')
+                xhr.addEventListener('load',function(){
+                    resolve(JSON.parse(xhr.response))
+                })
+                xhr.send(JSON.stringify(data))
+            })
+        }
+        myAxios({
+            method:'get',
+            url:'http://ajax-api.itheima.net/api/robot',
+            params:{
+                spoken:'你好',
+                abc:'123',
+            }
+        }).then((res)=>{console.log(res)})
+    </script>
+</body>
+</html>

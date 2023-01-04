@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // console.log(msg)
+        // // 未声明，报错
+        // // 后续代码不会执行
+        // console.log('44')
+
+        // 想要继续执行 报错代码 后面的代码
+        // 可以将 错误代码进行捕获 ，后续代码就能继续执行 
+        // 错误捕获：try{} 报错代码 }catch(err){ console.log(err)打印报错信息 }
+            // try{
+            //     console.log(msg)
+            // }catch(err){
+            //     console.log(err)
+            // }
+            // console.log('44')
+        // 同理
+        async function getBooks() { 
+            try {
+                const res = await axios({
+                    url: 'http://ajax-api.itheima.net/api/books/11'
+                })
+                console.log(res)
+            }catch(err){
+                console.log('err',err)
+            }
+            // 接口请求失败，任然可以执行后续代码
+            console.log(666)
+            
+        }
+        // 调用！！！！
+        getBooks()
+    </script>
+</body>
+
+</html>

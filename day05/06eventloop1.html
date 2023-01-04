@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <script>
+        console.log(1)
+        setTimeout(() => {
+            console.log(2)
+        }, 2000)
+        setTimeout(() => {
+            console.log(3)
+        }, 1000)
+        console.log(4)
+    // 1 4 3 2
+
+        // 先从上到下依次执行主线程中的同步代码 
+            // console.log(1)
+            // console.log(4)
+        // 再执行任务队列里的异步代码
+            // setTimeout(() => {
+            //     console.log(2)
+            // }, 2000)
+            // setTimeout(() => {
+            //     console.log(3)
+            // }, 1000)
+            // 当延迟的时间有明显的差异时,直接根据延迟时间确定结果即可
+            // 先打印出3
+    </script> -->
+
+    <!-- <script>
+        console.log(1)
+        setTimeout(() => {
+            console.log(2)
+        })
+        setTimeout(() => {
+            console.log(3)
+        })
+        console.log(4)
+    // 1 4 2 3
+
+        // 先从上到下依次执行主线程中的同步任务
+            // console.log(1)
+            // console.log(4)
+        // 再执行任务队列里的异步任务
+            // setTimeout(() => {
+            //     console.log(2)
+            // })
+            // setTimeout(() => {
+            //     console.log(3)
+            // })
+        // 异步任务也是从上到下依次执行        
+            // 当延迟时间无差异就从上往下依次执行
+                //setTimeout,的延迟时间省略不写默认值为0
+            // 当延迟的时间有明显的差异时,直接根据延迟时间确定结果即可       
+                
+    </script> -->
+
+    <!-- 1. 满足执行条件的代码会被加入到 任务队列
+    2. 主线程空闲 之后,开始执行 任务队列 中的代码
+    1. `setTimeout`无论等待多久,一定要等待主线程执行完毕,在执行
+    3. 综上`setTimeout(()=>{console.log(1)})`会被加入任务队列 -->
+
+    <script>
+        setTimeout(function () {
+            console.log(1)
+        })
+        new Promise(function (resolve, reject) {
+            console.log(2)
+            resolve(3)
+        }).then(function (val) {
+            console.log(val)
+        })
+        console.log(4)
+    // 2 4 3 1
+
+        // 先从上到下依次执行主线程中的同步任务
+            // new Promise()是同步任务，.then()是异步任务 
+            // Promise()内的代码立即执行，.then()内的代码加入任务队列
+                // new Promise(function (resolve, reject) {
+                //     console.log(2)
+                //     resolve(3)
+                // })
+                // console.log(4)
+        // 再执行任务队列里的异步任务
+            // 先执行微任务
+                // .then(function (val) {
+                //     console.log(val)
+                // })
+            // 再执行宏任务
+                // setTimeout(function () {
+                //     console.log(1)
+                // })
+
+    
+    //宏任务
+        // 定时器
+    // 微任务
+        // Promise.then()
+    </script>
+</body>
+
+</html>

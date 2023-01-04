@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Delay() {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(1)
+                });
+            })
+        }
+
+        // 语法：
+        // async + 函数 + 函数内await
+        // 应用场景
+        // 等待某个异步任务执行完，才执行的代码 
+            // async function xxx() {
+            //     await Delay()
+            //     // resolve 成功才执行后续代码
+            //     console.log(66)
+            // }
+            // xxx()
+        async function fn1(){
+            const result = await Delay()
+            console.log(result) // 1
+        }
+        fn1()
+        // 注意：
+            // 1. async 后面的函数要手动调用
+            // 2. await Promise  返回的是Promise中resolve的参数
+    </script>
+</body>
+
+</html>

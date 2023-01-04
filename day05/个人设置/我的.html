@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <style>
+      .form-select {
+        width: 103px;
+        display: inline-block;
+      }
+      .col-form-label {
+        text-align: right;
+      }
+      .figure-img {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+      }
+      #upload {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="p-5">个人设置</h1>
+      <form class="col-4">
+        <div class="row mb-3">
+          <label class="col-form-label col-3">昵称：</label>
+          <div class="col-9">
+            <input class="form-control col-9" type="text" name="nickname" />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-3">籍贯：</label>
+          <div class="col-9">
+            <select class="form-select col-4" name="province">
+              <option value="">--省--</option>
+            </select>
+            <select class="form-select col-4" name="city">
+              <option value="">--市--</option>
+            </select>
+            <select class="form-select col-4" name="area">
+              <option value="">--区--</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-form-label col-3">头像：</label>
+          <div class="col-9">
+            <input class="form-control col-9" type="hidden" name="avatar" />
+            <figure class="figure">
+              <input type="file" id="upload" />
+              <img
+                src="https://yanxuan-item.nosdn.127.net/12a882699bd531a1bd428bffe1989525.jpg"
+                class="figure-img img-fluid rounded"
+                alt="..."
+              />
+              <figcaption class="figure-caption">修改头像</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label class="col-3"></label>
+          <div class="col-9">
+            <button class="btn btn-primary">保存</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="./lib/bootstrap.min.js"></script>
+    <script src="./lib/axios.js"></script>
+    <script src="./lib/form-serialize.js"></script>
+    <script>
+      window.onload = async function () {
+        axios.defaults.baseURL = 'http://ajax-api.itheima.net'
+        // 获取用户信息+渲染页面
+        const res = await axios({
+          url: '/api/settings',
+        })
+        console.log(res)
+        const { nickname, area, avatar, city, province } = res.data.data
+        document.querySelector('[name=nickname]').value = nickname
+        document.querySelector('.figure-img').src = avatar
+
+        // 获取省的数据
+        const proRes = await axios({
+          url: '/api/province',
+        })
+        console.log('proRes', proRes.data.data)
+        let proInput = document.querySelector('[name=province]')
+        proInput.innerHTML = proRes.data.data
+          .map((item) => {
+            return `<option value="${item}">${item}</option>`
+          })
+          .join('')
+        proInput.value = province
+        // 获取市的数据
+        const cityRes = await axios({
+          url: '/api/city',
+          params: {
+            pname: province,
+          },
+        })
+        console.log('cityRes', cityRes.data.data)
+        let cityInput = document.querySelector('[name=city]')
+        cityInput.innerHTML = cityRes.data.data
+          .map((item) => {
+            return `<option value="${item}">${item}</option>`
+          })
+          .join('')
+        cityInput.value = city
+        // 获取区的数据
+        const areaRes = await axios({
+          url: '/api/area',
+          params: {
+            pname: province,
+            cname: city,
+          },
+        })
+        console.log('areaRes', areaRes.data.data)
+        let areaInput = document.querySelector('[name=area]')
+        areaInput.innerHTML = areaRes.data.data
+          .map((item) => {
+            return `<option value="${item}">${item}</option>`
+          })
+          .join('')
+        areaInput.value = area
+        // 省市区联动 之 改变省
+        proInput.onchange = async function () {
+          // 改变市：
+          const newCityRes = await axios({
+            url: '/api/city',
+            params: {
+              pname: this.value,
+            },
+          })
+          console.log('新的cityRes', newCityRes)
+          cityInput.innerHTML = newCityRes.data.data
+            .map((item) => {
+              return `<option value="${item}">${item}</option>`
+            })
+            .join('')
+          // 改变区：
+          const newAreaRes = await axios({
+            url: '/api/area',
+            params: {
+              pname: this.value,
+              cname: cityInput.value,
+            },
+          })
+          console.log('newAreaRes', newAreaRes.data.data)
+          areaInput.innerHTML = newAreaRes.data.data
+            .map((item) => {
+              return `<option value="${item}">${item}</option>`
+            })
+            .join('')
+        }
+        // 省市区联动 之 改变市
+        cityInput.onchange = async function () {
+          const newAreaRes2 = await axios({
+            url: '/api/area',
+            params: {
+              pname: proInput.value,
+              cname: this.value,
+            },
+          })
+          console.log('最最新newAreaRes', newAreaRes2.data.data)
+          areaInput.innerHTML = newAreaRes2.data.data
+            .map((item) => {
+              return `<option value="${item}">${item}</option>`
+            })
+            .join('')
+        }
+      }
+      // 上传头像
+      const img = document.querySelector('.figure-img')
+      const upload = document.querySelector('#upload')
+      img.addEventListener('click', function () {
+        upload.click()
+      })
+      upload.addEventListener('change', async (e) => {
+        const file = e.target.files[0]
+        const data = new FormData()
+        data.append('avatar', file)
+        const res = await axios({
+          url: '/api/file',
+          method: 'post',
+          data,
+        })
+        console.log('res上传图片', res)
+        // 将图片显示在页面中
+        img.src = res.data.data.url
+        // 将接口返回的图片地址塞给选择文件的input框，是为了后续serialize的时候，可以拿到这一个框框中的图片地址
+        document.querySelector('[name=avatar]').value = res.data.data.url
+      })
+
+      // 保存
+      document
+        .querySelector('form')
+        .addEventListener('submit', async function (e) {
+          e.preventDefault()
+          const data = serialize(this, { hash: true })
+          console.log(data, 'data')
+          const res = await axios({
+            url: '/api/settings',
+            method: 'put',
+            data,
+          })
+          console.log('res保存', res)
+        })
+    </script>
+  </body>
+</html>

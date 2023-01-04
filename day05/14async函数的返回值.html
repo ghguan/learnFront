@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const delay = function (s) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(`延时了${s}秒`)
+                }, s * 1000);
+            })
+        }
+        async function fn1() {
+            const res1 = await delay(6)
+            console.log('res1', res1)
+            const res2 = await delay(1)
+            console.log('res2', res2)
+        }
+        async function fn2() {
+            const res3 = await delay(2)  
+            console.log('res3', res3)
+            const res4 = await delay(3)
+            console.log('res4', res4)
+        } 
+
+        // 验证async的返回值
+        // const p = fn1()
+        // console.log(p) //Promise {<pending>}
+        // // async 函数的返回值 是 Promise对象
+
+        // 实现执行完fn1，再执行fn2 
+            // await 后面跟Promise
+            // async 的返回值为Promise对象 
+            // 可以将手动调用函数继续封装在async函数中
+        async function fn() {
+            await fn1()
+            await fn2()
+        }
+        // fn()  //res1 延时了6秒 res2 延时了1秒 res3 延时了2秒 res4 延时了3秒
+
+        // ------------------------------------------------------------------------
+        console.log('top')
+        fn()
+        console.log('bottom')
+        // top bottom res1 延时了6秒 res2 延时了1秒 res3 延时了2秒 res4 延时了3秒
+    </script>
+</body>
+
+</html>

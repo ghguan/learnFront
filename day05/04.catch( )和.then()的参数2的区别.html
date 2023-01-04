@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        // .catch 和 .then的参数2 捕获错误的区别
+        
+        // 手动创造错误 ==> new 一个错误 ==> 抛出错误
+        // throw new Error('test')    
+
+        // 错误在Promise中，错误被.then的第二个参数捕获
+        let p1 = new Promise((resolve,reject)=>{            
+            throw new Error('test1')
+        })
+        .then(
+            (res1)=>{
+                console.log('res1',res1)
+            },
+            (err1)=>{
+                console.log('err1',err1)
+            },
+        )
+        .catch(
+            (err11)=>{console.log('err11',err11)}
+        )
+
+        // 错误在.then的第一个参数中，错误被.catch捕获
+        let p2 = new Promise((resolve,reject)=>{            
+            resolve(1)
+        })
+        .then(
+            (res2)=>{
+                console.log('res2',res2)
+                throw new Error('test2')
+            },
+            (err2)=>{
+                console.log('err2',err2)
+            },
+        )
+        .catch(
+            (err22)=>{console.log('err22',err22)}
+        )
+        
+        // 总结
+            // 1. 错误在Promise内部，.catch和.then参数2 都能捕获到错误，但两个同时存在时，执行.then 的参数2
+            // 2. 错误在Promise外部.then参数1中，错误只能被.catch 捕获到
+
+    </script>
+</body>
+</html>

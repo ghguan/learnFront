@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function randomPro() {
+            return new Promise((resolve, reject) => {
+                // 延迟 1s
+                setTimeout(() => {
+                    // 随机数
+                    // Math.random() 0-1的小数
+                    // * 100 控制范围
+                    // parseInt 转整数
+                    const num = parseInt(Math.random() * 100)
+                    if (num > 0 && num < 50) {
+                        resolve('成功啦:' + num)
+                    } else if (num >= 50 && num <= 100) {
+                        reject('失败啦:' + num)
+                    }
+                }, 1000)
+            })
+        }
+
+        let p = randomPro()
+        console.log(p)  // Promise {<pending>}
+        p.then(
+            (res)=>{
+                console.log(res)
+                console.log(p) // Promise {<fulfilled>: '成功啦:39'}
+            },
+            (err1)=>{
+                console.log('err1',err1) 
+                console.log(p) //Promise {<rejected>: '失败啦:87'}
+        })
+        .catch((err)=>{
+            console.log(err)
+            console.log(p) // Promise {<rejected>: '失败啦:99'}
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+        const delay = function (s) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(`延时了${s}秒`)
+                }, s * 1000);
+            })
+        }
+        async function fn1() {
+            const res1 = await delay(6)   
+            console.log('res1', res1)
+            const res2 = await delay(1)
+            console.log('res2', res2)
+        }                                           
+        async function fn2() {
+            const res3 = await delay(2)  
+            console.log('res3', res3)
+            const res4 = await delay(3)
+            console.log('res4', res4)
+        }                                           
+        // fn1()
+        // fn2()
+        // res3 延时了2秒
+        // res4 延时了3秒
+        // res1 延时了6秒
+        // res2 延时了1秒 
+        async function fn3() {
+            const res5 = await delay(2)  
+            console.log('res5', res5)
+            const res6 = await delay(4)
+            console.log('res6', res6)
+        }                                           
+        async function fn4() {
+            const res7 = await delay(1)  
+            console.log('res7', res7)
+            const res8 = await delay(3)
+            console.log('res8', res8)
+        }     
+        // 代码从上至下的延时顺序
+            // 6-5-4-3-2-1-①/1-②/
+            // 2-1-③/3-2-1-④/
+            // 2-1-⑤/4-3-2-1-⑥/
+            // 1-⑦/3-2-1-⑧/   
+        // 调用函数的顺序                                    
+            // fn1()  
+            // fn2()
+            // fn3()
+            // fn4()
+            // res7 延时了1秒
+            // res3 延时了2秒
+            // res5 延时了2秒
+            // res8 延时了3秒
+            // res4 延时了3秒
+            // res1 延时了6秒
+            // res6 延时了4秒
+            // res2 延时了1秒    
+
+        fn1()  
+        fn3()
+        fn2()
+        fn4()
+        // res7 延时了1秒
+        // res5 延时了2秒
+        // res3 延时了2秒
+        // res8 延时了3秒
+        // res4 延时了3秒
+        // res1 延时了6秒
+        // res6 延时了4秒
+        // res2 延时了1秒
+
+        // 总结
+            // 
+            // 
+            // 打印顺序和函数调用的顺序有关
+            
+
+        // 总结
+        //     await 只能影响async函数内部的执行顺序，并不能影响async函数外部的执行顺序
+        //     async函数内部的执行顺序 受 await 影响 只能从上往下执行
+        //     async函数之间的执行顺序 受 函数调用的顺序 影响，先调用的先执行
+        //     每个async函数是同时进行的，若延时时间一致，则先调用的先打印
+
+
+
+
+    </script>
+</body>
+
+</html>

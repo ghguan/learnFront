@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./个人设置/css/bootstrap.min.css" />
+    <style>
+        .form-select {
+            width: 103px;
+            display: inline-block;
+        }
+
+        .col-form-label {
+            text-align: right;
+        }
+
+        .figure-img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        #upload {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="p-5">个人设置</h1>
+        <form class="col-4">
+            <div class="row mb-3">
+                <label class="col-form-label col-3">昵称：</label>
+                <div class="col-9">
+                    <input class="form-control col-9" type="text" name="nickname" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-form-label col-3">籍贯：</label>
+                <div class="col-9">
+                    <select class="form-select col-4" name="province">
+                        <option value="">--省--</option>
+                    </select>
+                    <select class="form-select col-4" name="city">
+                        <option value="">--市--</option>
+                    </select>
+                    <select class="form-select col-4" name="area">
+                        <option value="">--区--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-form-label col-3">头像：</label>
+                <div class="col-9">
+                    <input class="form-control col-9" type="hidden" name="avatar" />
+                    <figure class="figure">
+                        <input type="file" id="upload" />
+                        <img src="https://yanxuan-item.nosdn.127.net/12a882699bd531a1bd428bffe1989525.jpg"
+                            class="figure-img img-fluid rounded" alt="..." />
+                        <figcaption class="figure-caption">修改头像</figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-3"></label>
+                <div class="col-9">
+                    <button class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="./个人设置/lib/bootstrap.min.js"></script>
+    <script src="./个人设置/lib/axios.js"></script>
+    <script src="./个人设置/lib/form-serialize.js"></script>
+    <script>
+        // 接口文档
+        // 省市区https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-25613854
+        // 个人信息https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-25606457
+        // 基地址
+        axios.defaults.baseURL = 'http://ajax-api.itheima.net'
+        // 页面监听--一进页面就渲染
+        // 用async+await函数代替.then 
+        window.onload = async function () {
+            // 第一次请求 头像+昵称
+            const res = await axios({
+                url: '/api/settings'
+            })
+            // console.log(res)
+            // 获取数据后，进行解构赋值
+            const { area, avatar, city, nickname, province } = res.data.data
+            // 渲染昵称和头像
+            document.querySelector('[name="nickname"]').value = nickname
+            document.querySelector('.figure-img').src = avatar
+            // 第二次请求 省
+            const pV = await axios({
+                url: '/api/province'
+            })
+            // console.log(pV)
+            // 获取省下拉框
+            let pvInput = document.querySelector('[name="province"]')
+            // 渲染省下拉框里的选项
+            pvInput.innerHTML = pV.data.data.map(item => {
+                return `<option value="${item}">${item}</option> `
+            }).join('')
+            // 渲染个人对应的省值
+            pvInput.value = province
+            // 第三次请求 市
+            const cT = await axios({
+                // get传参 可地址拼接，调用值用模板字符串
+                url: `/api/city?pname=${province}`,
+            })
+            // console.log(cT)
+            // 获取市下拉框
+            let ctInput = document.querySelector('[name="city"]')
+            // 渲染市下拉框里的选项
+            ctInput.innerHTML = cT.data.data.map(item2 => {
+                return `<option value="${item2}">${item2}</option> `
+            }).join('')
+            // 渲染个人对应的市值
+            ctInput.value = city
+            // 第四次请求 区
+            const aE = await axios({
+                url: '/api/area',
+                params: {
+                    pname: province,
+                    cname: city,
+                }
+            })
+            // console.log(aE)
+            let aeInput = document.querySelector('[name="area"]')
+            aeInput.innerHTML = aE.data.data.map(item3 => {
+                return `<option value="${item3}">${item3}</option> `
+            }).join('')
+            aeInput.value = area
+
+            // 修改信息
+            // 省市区联动 
+            // 监听省input框的改变事件
+            pvInput.onchange = async function () {
+                // 改变就重新请求 市
+                // 重新声明请求函数
+                const newCT = await axios({
+                    // get传参 可地址拼接，调用值用模板字符串
+                    // 传参为 修改后新的省值
+                    url: `/api/city?pname=${this.value}`,
+                })
+                // console.log(cT)
+                // 渲染市下拉框里的选项
+                ctInput.innerHTML = newCT.data.data.map(item4 => {
+                    return `<option value="${item4}">${item4}</option> `
+                }).join('')
+                // 不需要赋值了，自己重新选
+                // 渲染个人对应的市值
+                // ctInput.value = city
+
+                // 改变就重新请求 区
+                const newaE = await axios({
+                    url: '/api/area',
+                    params: {
+                        pname: this.value,
+                        cname: ctInput.value,
+                    }
+                })
+                // console.log(newaE)
+                aeInput.innerHTML = newaE.data.data.map(item5 => {
+                    return `<option value="${item5}">${item5}</option> `
+                }).join('')
+            }
+            // 市区联动 
+            // 监听市改变事件
+            ctInput.onchange = async function () {
+                // 重新请求对应区的数据
+                // 修改变量名
+                const newaE2 = await axios({
+                    url: '/api/area',
+                    params: {
+                        // 传参！
+                        pname: pvInput.value,
+                        cname: this.value,
+                    }
+                })
+                // console.log(newaE2)
+                aeInput.innerHTML = newaE2.data.data.map(item6 => {
+                    return `<option value="${item6}">${item6}</option> `
+                }).join('')
+            }
+        }
+        // 上传头像
+        // 获取图片元素
+        const img = document.querySelector('.figure-img')
+        // 获取文件选择元素
+        const fileBtn = document.querySelector('[id="upload"]')
+        // 点击图片触发模拟点击文件选择按钮
+        img.onclick = function () {
+            fileBtn.click()
+        }
+        // 文件选择改变事件--发起请求
+        fileBtn.onchange = async function (e) {            
+            // console.log(e)
+            // 获取图片
+            const file = e.target.files[0]
+            // new一个FormData的实例
+            const fileData = new FormData()
+            // 将图片添加到FormData中
+            fileData.append('avatar', file)
+            // console.log(file)
+            // 判断选择的文件格式是否为图片
+            if (file.type.includes('image') === true) {
+                // 发请求，响应请求
+                const res = await axios({
+                    method: 'post',
+                    url: '/api/file',
+                    data: fileData,
+                })
+                // .then((res) => {
+                //     document.querySelector('.thumb').src = res.data.data.url
+                // })
+                // console.log(res)
+                // 渲染页面
+                img.src = res.data.data.url
+                // 将地址赋值给文件选择框，方便保存修改时，传参
+                document.querySelector('[name=avatar]').value = res.data.data.url
+            } else {
+                alert('请选择图片文件')
+            }            
+        }
+        // 保存修改
+        // 点击保存
+        // 绑定form表单submit事件/button点击事件
+        document.querySelector('form').addEventListener('submit',function(e){
+            // 阻止表单提交事件是调用函数！！
+            // e.preventDefault
+            e.preventDefault()  
+            
+            // 使用serialize()传参
+            // 获取form表单,这里的this
+            // const form = document.querySelector('form')
+            // const data = serialize(form,{hash:true})
+            const data = serialize(this,{hash:true})
+            axios({
+                url:'/api/settings',
+                method:'put',
+                data,
+            }).then((res)=>{
+                console.log(res)
+            })
+        })
+    </script>
+
+</body>
+
+</html>

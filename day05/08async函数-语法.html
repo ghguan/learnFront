@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // async函数
+        // 用写同步代码的方式,去写异步代码
+        // 像执行同步代码一样执行异步代码
+        // 但代码本身还是异步的，只是看起来像同步代码的格式
+        function Delay(){
+            return new Promise((resolve,reject)=>{
+                setTimeout(() => {
+                    console.log(22)
+                    resolve(1)
+                });
+            })
+        }
+
+        // Promise写法: Promise执行完再执行打印 用的 Promise.then()
+        // .then 里写  需要等Promise执行完才执行的代码
+        // const p = Delay().then((res)=>{
+        //     console.log(22)
+        // })
+
+        // async写法:Promise执行完再打印 用的await Promise
+        // await Promise的下一行写 需要等Promise执行完才执行的代码
+        // async 是关键字, await 是关键字
+        async function xxx(){
+            await Delay()
+            // resolve 成功才执行后续代码
+            console.log(66)
+        }
+        xxx()
+
+        // 语法：
+        // async + 函数 + 函数内await
+        // 应用场景
+        // 等待某个异步任务执行完，才执行的代码 
+    </script>
+</body>
+</html>

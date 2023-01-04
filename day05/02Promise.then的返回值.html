@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 封装一个返回Promise函数
+        const timeP = function (delay) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(delay)
+                }, 1000);
+            })
+        }
+        const p1 = timeP(1)
+        console.log('p1',p1) // Promise对象1            
+            // p1 = new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve(1)
+            //     }, 1000);
+            // })
+            // p1 == 有参数的Promise（Promise中手动调用了参数）
+
+        const p2 = timeP(1).then((res1) => {
+            console.log('res1',res1) // 1
+        })
+        console.log('p2', p2) //Promise对象.then后形成的 Promise对象2      
+            // p2 = new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve(1)
+            //     }, 1000);
+            // }).then((res)=>{
+            //     console.log(res)
+            // }) 
+            // p2 == p1.then((res)=>{console.log(res)})
+            // p1是有参数的Promise对象，会执行.then() 形成p2
+            // 形成p2是空的Promise（Promise中没有手动调用参数）       
+
+        const p3 = timeP(1).then((res2)=>{
+            console.log('res2',res2)  // 1
+        }).then((res3)=>{
+            console.log('res3',res3) // undefined
+            return timeP(1)
+        })
+        console.log('p3',p3) // Promise对象3
+            // p3 == p2.then((res)=>{console.log(res)})
+            // p2是空的Promise（Promise中没有手动调用参数）,没结果传入.then
+            // Promise对象3的内容为 p3执行完.then() return的内容
+            // p3 == p1
+        
+        const p4 = p3.then((res4)=>{
+            console.log('res4',res4) // 1
+        })
+        console.log('p4',p4) // Promise对象4
+        // p3内手动调用了resolve(), 传入.then
+
+        const p5 = timeP(1).then((res5)=>{
+            console.log('res5',res5) // 1
+            return 'haha'
+        })
+        console.log('p5',p5) // Promise对象5
+            // return 一个值，内部会将这个值封装成一个Promise，并将其作为resolve()的参数，传给下一个.than()
+            // 简单理解为p7
+
+        const p6 = p5.then((res6)=>{
+            console.log('res6',res6) //haha
+        })
+        console.log('p6',p6) // Promise对象6
+
+        const p7  = timeP(1).then((res7)=>{
+            console.log('res7',res7) // 1
+            return new Promise((resolve,reject)=>{resolve('haha')})
+        })
+        console.log('p7',p7) // Promise对象7
+
+        const p8 = p7.then((res8)=>{console.log('res8',res8)}) //haha
+        console.log('p8',p8) // Promise对象8
+    // 总结：        
+    //     .then()中无论没有return，无论return什么，执行结果都是一个Promise对象 
+    //     .then()中回调函数的参数值，就是调用这个.then的Promise中的resolve()/reject()的参数
+    //     没有return，形成的Promise对象内就没有手动调用参数，下一次也会进入.then()但就没有参数传入，res==undefined
+    //     若return的是一个值，内部会将这个值封装成一个Promise，并将其作为resolve()的参数，传给下一个.than()
+    //     通常要return 一个内部调用了参数(resolve()/reject())的Promise
+    </script>
+</body>
+
+</html>
