@@ -1,0 +1,36 @@
+<!-- 接口测试 -->
+<!-- 请求接口，渲染页面 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul class="ul">
+        
+    </ul>
+    <button>发送请求</button>
+    <script src="./axios.min.js"></script>
+    <script>
+        const btn = document.querySelector('button')
+        btn.addEventListener('click',async function(){
+            const res = await axios({
+                url:'http://192.168.19.63:3000/api/news'
+            })
+            // console.log(res)
+            res.data.map()
+        })
+
+        // 接口测试 -- 浏览器，报错，跨域问题
+        // 接口测试 -- 使用软件，避开浏览器
+        // 注意：1.测试前要运行服务器
+
+        // 解决跨域
+        // 设置响应头
+        
+    </script>
+</body>
+</html>

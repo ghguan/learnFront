@@ -1,0 +1,76 @@
+<!-- 接口测试 -->
+<!-- 请求接口，渲染页面 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul class="ul">
+
+    </ul>
+    <button>发送请求</button>
+    <script src="./axios.min.js"></script>
+    <script>
+        const btn = document.querySelector('button')
+        btn.addEventListener('click', async function () {
+            // const res = await axios({
+            //     url:'http://192.168.19.63:3000/api/news'
+            // })
+            // console.log(res)
+
+            const xhr = new XMLHttpRequest()
+            xhr.open('get', 'http://192.168.19.63:3000/api/news')
+            // xhr.setRequestHeader()
+            xhr.addEventListener('load', function () {
+                console.log(JSON.stringify(xhr.response))
+            })
+            xhr.send()
+        })
+        // 如果用原生的ajax发送请求 
+
+        const api_url = 'http://192.168.19.66:8888/api/students'
+
+        // 1. 创建一个xhr对象
+        const xhr = new XMLHttpRequest()
+
+        // 2. 设置请求方法和接口地址
+        xhr.open('GET', api_url)
+
+        // 可以设置请求头  -- 一般可以省略，后端可以拿到这个请求头，做一些特殊处理
+        // xhr.setRequestHeader('myHeader', 'test-header')
+
+        // 3. 发送请求
+        xhr.send()
+
+        // 4. 监听ajax状态改变的事件 onreadystatechange
+
+        // xhr.onload = function(){
+
+        // }
+        // xhr.onreadystatechange = function(){
+
+        // }
+        xhr.addEventListener('readystatechange', () => {
+            // ajax的五个状态  4 ==> 返回的数据已经下载完了
+            if (xhr.readyState === 4) {
+                // xhr.status ==> 状态码 301 302 重定向 304==> 命中缓存了 
+                if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                    // console.log(xhr.responseText)
+                    console.log(xhr.response)
+                } else {
+                    console.log('请求不成功')
+                }
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>
