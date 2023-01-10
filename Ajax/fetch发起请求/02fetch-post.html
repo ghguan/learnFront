@@ -22,7 +22,7 @@
                     'content-type':'application/json'
                 },
                 body:JSON.stringify(params)
-            }).then((res)=>{res.json()}).then((res)=>{console.log(res)})
+            }).then((res)=>{return res.json()}).then((res)=>{console.log(res)})
         })
     </script>
 </body>

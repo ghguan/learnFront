@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- 导入样式表 -->
+    <link rel="stylesheet" href="./news/assets/news.css" />
+  </head>
+
+  <body>
+    <!-- 新闻列表 -->
+    <div id="news-list">
+      <!-- start box -->
+      <!-- 新闻的 item 项 -->
+      <div class="news-item">
+        <img
+          class="thumb"
+          src="https://a.zdmimg.com/202207/18/62d50d53848d77366.jpg_c350.jpg"
+          alt=""
+        />
+        <div class="right-box">
+          <!-- 新闻标题 -->
+          <h1 class="title">5G商用在即，三大运营商营收持续下降</h1>
+          <div class="footer">
+            <div>
+              <img
+                src="https://avatarimg.smzdm.com/default/4595480055/5d15aca1a4fae-small.jpg"
+                alt=""
+              />
+              <!-- 新闻来源 -->
+              <span>胡润百富</span>&nbsp;&nbsp;
+
+              <!-- 发布日期 -->
+              <span>2019-10-28 10:14:38</span>
+            </div>
+            <!-- 评论数量 -->
+            <span>评论数：66</span>
+          </div>
+        </div>
+      </div>
+      <!-- end box -->
+    </div>
+    <script src="./my-api/axios.min.js"></script>
+    <script>
+        // 封装一个readerList函数，一传入arr就渲染
+        const readerList = function(arr){
+            const htmlArr = arr.map((el)=>{
+              // 传入参数-解构赋值
+                const {pic_url,title,nickname,avatar,publish_time,comment_count} = el
+                return `<div class="news-item">
+        <img
+          class="thumb"
+          src="${pic_url}"
+          alt=""
+        />
+        <div class="right-box">
+          <h1 class="title">${title}</h1>
+          <div class="footer">
+            <div>
+              <img
+                src="${avatar}"
+                alt=""
+              />
+              <span>${nickname}</span>&nbsp;&nbsp;
+              <span>${publish_time}</span>
+            </div>
+            <span>评论数：${comment_count}</span>
+          </div>
+          </div>
+        </div>`
+            })
+            // 渲染页面
+            document.querySelector('#news-list').innerHTML = htmlArr.join('')
+
+        }
+        
+        
+        // 监听当DOM加载完毕的时候，渲染数据
+        document.addEventListener('DOMContentLoaded',async function (){
+            // my-API 接口地址
+            // 注意要运行服务器
+            const api = 'http://192.168.31.56:3000/api/news'
+            const res = await axios.get(api)
+            // console.log(res)
+            const arr = res.data
+            // 接收数据，渲染页面
+            readerList(arr)
+        })
+        
+    </script>
+  </body>
+</html>

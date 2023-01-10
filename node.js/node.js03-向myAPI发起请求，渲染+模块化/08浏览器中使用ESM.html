@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script type="module">
+        // 1. script 标签设置type属性 = module
+        // 2. 各种导入语法 ，注意导入的变量与导出的变量是对应的
+        import module1 from './07es6-module/module/01默认导出模块.js'
+        console.log(module1.msg)
+        import {music} from './07es6-module/module/02按需导出模块.js'
+        console.log(music)
+        import './07es6-module/module/04没有导出.js'
+    </script>
+
+    <!-- 不可以通过引入使用ESM -->
+    <!-- <script ❌src="./07es6-module/01默认导入模块.js"></script>
+    <script>
+        import module1 from './07es6-module/module/01默认导出模块.js'
+        console.log(module1.msg)
+    </script> -->
+</body>
+</html>
