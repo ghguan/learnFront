@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 测试，production 生产打包出来的js文件是否可用 -->
+    <!-- 打包文件中有渲染在box里的定时器 -->
+    <div class="box"></div>
+    <!-- 引入文件 -->
+    <script src="./webpack-lesson/dist/bundle.js"></script>
+
+
+    <!-- 测试，development 开发打包出来的js文件是否可用 -->
+    <!-- 打包文件中有渲染在box里的定时器 -->
+    <div class="box"></div>
+    <!-- 引入文件 -->
+    <script src="./webpack-lesson/dist/main.js"></script>
+
+    <!-- 页面显示了定时器，打包后的js可用！ -->
+
+</body>
+
+</html>
