@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">{{ msg }}</div>
+
+    <script src="./js/vue.js"></script>
+    <script>
+        // 1. 定义一个data函数，这个函数需要return一个对象
+        // data：function（）{
+        //      return {
+        //          msg:'hello world'
+        //      }
+        // }
+        //  可简写
+        // data(){
+        //      return{ }
+        // }
+        // 2. 用插值表达式，渲染数据
+        // {{ msg }}
+
+        // const vm = new Vue({
+        //     el:'#app',
+        //     data(){
+        //         return {
+        //             msg:'hello world'
+        //         }
+        //     },
+        //     template:'<h1>{{msg}}</h1>'
+        // })
+
+        // (1) 如果有template，template会替换ip为app的节点，渲染到页面上
+        // (2) 如果没有template, 默认以#app这个节点作为模板渲染
+
+        const vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    msg: 'hello world'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

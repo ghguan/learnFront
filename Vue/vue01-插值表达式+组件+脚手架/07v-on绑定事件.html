@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>银行卡余额：{{money}}</div>
+        <button v-on:click="money++">搬砖</button>
+        <button v-on:click="addMoney">开店</button>
+        <button v-on:click="addCount(5)">+5</button>
+
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        // V-on指令
+        // 作用:注册事件
+        // 语法
+        // 1. v-on:事件名 =“要执行的少量代码"
+        // 2. v-on:事件名 "方法/函数"
+        // 3. v-on:事件名 = methods中的方法(参数1，参数2，参数3，...)
+        // 简写
+        // 4.v-on:click ==> @click
+        const vm = new Vue({
+            el:'#app',
+            data(){
+                return{
+                    money:666
+                }
+            },
+            methods: {
+                addMoney(){
+                    console.log(this)
+                    this.money = this.money + 1999 - 99
+                },
+                addCount(count){
+                    this.money = this.money + count
+                }
+            }
+        })
+        console.log(vm)
+        // 注意：
+        // 1.Vue中，如果要定义方法，要写在methods对象上
+        // 2.多个方法之间，逗号隔开
+        // 3.如果要在methods中获取data中的数据，使用this.变量名
+        // 4.方法中的this指向的是vm这个Vue的实例
+    </script>
+</body>
+</html>

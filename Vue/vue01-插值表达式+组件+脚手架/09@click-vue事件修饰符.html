@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <a href="www.baidu.com" @click.prevent="fn">百度</a>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        // 事件修饰符
+        // 1. @事件名.prevent  ==> e.preventDefault() 阻止默认行为
+        // 2. @事件名.stop     ==> e.stopPropagation() 阻止事件冒泡 
+        // 3. 事件修饰符可以串联 ==> @click.prevent.stop / @click.stop.prevent 顺序不同意义不同
+        const vm = new Vue({
+            el:'#app',
+            data(){
+                return {
+
+                }
+            },
+            methods: {
+                fn(){
+                    console.log('去百度')
+                }
+            }
+        })
+    </script>
+</body>
+</html>

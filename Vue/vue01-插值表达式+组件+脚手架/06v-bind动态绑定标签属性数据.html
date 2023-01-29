@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div v-bind:title = "msg">123</div>
+        <a :href="link">去百度</a>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        // 需求：
+        // 想要在标签属性上使用data中的数据，或者说
+        // 将标签的属性和某一个数据进行绑定。
+
+        // 绑定： 数据变了，视图就变化，视图变化，数据也变化。
+        // 页面上展示的视图，和我们的数据有一个捆绑关系。
+        const vm = new Vue({
+            el:'#app',
+            data(){
+                return{
+                    msg:'hello world',
+                    link:'http://www.baidu.com'
+                }
+            }
+        })
+        // 标签上的属性绑定 
+        // 1. 直接写变量名 不行 
+        // 2. 插值表达式也不行 
+
+        // 在 Vue中，以 v-开头的就是Vue指令
+        // v-bind 指令 
+        // 作用： 绑定标签属性 
+        // 语法：v-bind:属性名 = "data中的变量名"
+        // 简写： ：属性名 = "data中的变量名"
+        // ==>  v-bind:属性名    ===> :属性名
+
+        
+        // 小结一下：
+        // 1. v-bind , 希望标签上的某个属性 和 data中的某个数据进行一个绑定 
+        // 2. 标签内的数据绑定 使用插值表达式 {{}}
+    </script>
+</body>
+</html>

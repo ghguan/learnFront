@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" name="" id="" @keyup.enter="handleKeyup">
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        // 按键修饰符
+        // @keyup.enter ==> 按下回车按键的时候，执行handleKeyup事件
+        const vm = new Vue({
+            el:'#app',
+            methods: {
+                handleKeyup(){
+                    console.log('enter')
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <div>{{ if(msg.age<18){return 1}}}</div> -->
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    msg: {
+                        name: 'hh',
+                        age: 16,
+                        hobby: 'study'
+                    }
+                }
+            }
+        })
+        // 插值表达式 {{]]
+        // 作用:使用data中的数据渲染视图
+        // 1. 双大括号会将数据解析为普通文本，不能解析html标签
+        // 2. 数据的变量必须要在data中存在 ， msg2 报错
+        // 3. 插值{[}可以放JS表达式，但是不能写js语句
+        // 4. 不能在标签的属性上使用插值表达式 {{]}
+
+
+
+        // JS表达式和js语句的区别？
+        // JS表达式：一个表达式会产生一个值，可以放在任何需要值的地方
+        //  1. a
+        //  2. a + b
+        //  3. fn(1)
+        //  4. x > y ? 'wa' : "yo"
+
+        // JS语句：
+        // 1. if(){}
+        // 2. for(){}
+    </script>
+</body>
+
+</html>

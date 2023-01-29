@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <btn-count></btn-count>
+         <!-- 使用局部组件:使用挂载名，并非注册名 -->
+        <comp-a></comp-a>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        // 全局注册
+        Vue.component('btn-count',{
+            data(){
+                return{
+                    count:0,
+                }
+            },
+            template:'<button @click="count++"> {{count}} </button>'
+        })
+        // 创建局部组件
+        // 通过一个普通的JavaScript对象来定义组件
+        // 创建后，需要在实例中注册
+        const componentA = {
+            data(){
+                return {
+                    count:0,
+                }
+            },
+            // 在局部创建的组件里，可以使用全局组件,需标签包裹使用
+            // template:'<btn-count></btn-count> <button @click="count++">{{count}}</button>'❌
+            template:'<div><btn-count></btn-count> <button @click="count++">{{count}}</button></div>'
+
+        }
+
+        const vm = new Vue({
+            el:'#app',
+            data(){
+                return{
+
+                }
+            },
+            // 注册局部变量
+            components:{
+                'comp-a':componentA,
+            }
+        })
+        // 局部组件每次都-创建-注册-使用
+        // 创建在注册前
+    </script>
+</body>
+</html>

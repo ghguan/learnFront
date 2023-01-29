@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <btn-count></btn-count>
+        <comp-a></comp-a>
+    </div>
+    <script src="./js/vue.js"></script>
+
+    <!-- 浏览器不能使用import语法，要加type属性 -->
+    <script type="module">
+        // 导入组件
+        import componentA from './js/局部组件.js'
+
+        // 浏览器中要使用ESM导入导出
+        // 1. type="module"
+        // 2. 以服务的形式启动项目  live server
+
+
+        // 定义一个名为 button-counter 的新组件
+        // 1. 全局注册的组件 
+        //    ==> 一个组件一旦全局注册了，我们可以在所有的组件中使用它
+        Vue.component('btn-count',{
+            data(){
+                return {
+                    count:0
+                }
+            },
+            template:'<button @click="count++">{{count}}</button>'
+        })
+
+        const vm = new Vue({
+            el:'#app',
+            data(){
+                return {
+
+                }
+            },
+            // 我们可以定义很多很多局部组件，要使用的时候，就在components这个对象去注册
+            // 左边的是组件的名字， 在html上使用的时候
+            components:{    
+                'comp-a':componentA
+
+            }
+        })
+    </script>
+</body>
+</html>

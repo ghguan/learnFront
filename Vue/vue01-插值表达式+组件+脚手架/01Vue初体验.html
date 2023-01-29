@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app1"></div>
+    <div id="app2"></div>
+    <div id="app3"></div>
+    <div id="app4"></div>
+    <div id="app5"></div>
+    <!-- 导入vue -->
+    <!-- 方式1：CDN引入  CDN加速 CDN：内容分发网络、网络节点 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script> -->
+    <!-- 方式2：下载vue 导入文件-->
+    <script src="./js/vue.js"></script>
+
+    <script>
+        // 1. 创建Vue实例
+        // 2. 配置挂载节点
+        // 3. 设置挂载内容
+
+        //配置挂载节点的几种形式
+        // (1)el配置项：选择节点
+        const vm1 = new Vue({
+            // el 跟一个css选择器
+            el:'#app1',
+            // template的内容会挂载到el配置项的节点上
+            // template的内容必须要有标签
+            template:'<h1>Hello World</h1>'
+        })
+        // (2)实例.$mount()方法：将内容挂载到节点上
+            // 直接使用
+        const vm2 = new Vue({
+             // template的内容会挂载到$mount()方法里的节点上
+            template:'<h1>Hello World</h1>'
+        }).$mount('#app2')
+            // 间接使用
+        const vm3 = new Vue({
+            template:'<h1>Hello World</h1>'
+        })
+        vm3.$mount('#app3')
+            // 满足条件时使用 ：过量秒再将内容挂载到节点上
+        const vm4 = new Vue({
+            template:'<h1>Hello World</h1>'
+        })
+        setTimeout(()=>{
+            vm4.$mount('#app4')
+        },2000)
+        
+
+
+    </script>
+</body>
+</html>
