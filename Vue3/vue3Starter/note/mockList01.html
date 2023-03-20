@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>虚拟列表</title>
+  </head>
+  <style>
+    /* 让 scroll 在 display 下，滚动起来 */
+    .display {
+      overflow: auto;
+      height: 300px;
+    }
+  </style>
+  <body>
+    <div class="display">
+      <div class="scroll">
+        <div class="placeholder"></div>
+        <div class="content"></div>
+      </div>
+    </div>
+    <script>
+      // 准备一个待渲染的数组，数组从 1 - 1000
+      const arr = Array.from({ length: 1000 }, (_, i) => i + 1);
+      console.log(arr.length);
+      // 假设每一项 30px，设置 scroll 的高度，能够装下所有数组的渲染结果
+      const scroll = document.querySelector(".scroll");
+      scroll.style.height = arr.length * 30 + "px";
+      // 监听 display 的 滚动事件，求出 scrollTop
+      const display = document.querySelector(".display");
+      display.addEventListener("scroll", (e) => {
+        const scrollTop = e.target.scrollTop;
+        // 根据 scrollTop 和 每一项的高度，计算出当前展示项目的 index，命名为 currentIndex
+        const currentIndex = Math.floor(scrollTop / 30);
+        // 对数组进行切片，从 currentIndex 开始，取 10 个，命名为 currentArr
+        const currentArr = arr.slice(currentIndex, currentIndex + 10);
+        console.log(currentArr);
+        // 设置 placeholder 的高度，让 currentArr 渲染到它的下面
+        const placeholder = document.querySelector(".placeholder");
+        placeholder.style.height = currentIndex * 30 + "px";
+        // 将 currentArr 渲染到 content 中
+        const content = document.querySelector(".content");
+        content.innerHTML = currentArr
+          .map(
+            (item) =>
+              `<div style="height: 30px;background-color: black;color:white;margin: 2px 0;">${item}</div>`
+          )
+          .join("");
+      });
+    </script>
+  </body>
+</html>

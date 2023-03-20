@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script>
+    // 创建节点
+    const div = document.createElement('div');
+    const p = document.createElement('p');
+    const button = document.createElement('button');
+    // 操作节点 将p节点和button节点添加到div节点中,将div节点添加到id为app的节点中
+    div.appendChild(p);
+    div.appendChild(button);
+    document.getElementById('app').appendChild(div);
+    // 创建数据
+    let num = 0;
+
+    // 创建视图
+    p.innerHtml = ;
+    button.innerHTML = '加一';
+
+    // 创建控制器
+    button.addEventListener('click', () => {
+        num ++;
+        p.innerHtml = 'num';
+        // innerHtml怎么使用,代码示范
+
+
+
+    })
+
+    
+
+</script>
+</html>

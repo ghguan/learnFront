@@ -1,0 +1,24 @@
+<template>
+  <div id="app">
+   <Table/>
+   <Drag />
+  </div>
+</template>
+<script>
+// 导入Table组件
+import Table from './components/Table.vue'
+import Drag from './components/Drag.vue'
+export default {
+  // 注册组件
+  components: {
+    Table,
+    Drag
+  },
+  data() {
+    return {
+
+    }
+  }
+
+}
+</script>
