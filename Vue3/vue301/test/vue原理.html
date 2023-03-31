@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app"></div>
+</body>
+<script>
+    function h(tag,props,children){
+        return {
+            tag,
+            props,
+            children:children.map(child=>{
+                if(typeof child === "string"){
+                    return {
+                        tag:"text",
+                        props:{},
+                        children:[child]
+                    }
+                }else{
+                    return child
+                }
+            })
+        }
+    }
+    const app = {
+        data() {
+            return {
+                age: 18
+            }
+        },
+        watch: {
+            name(value) {
+                console.log(value)
+            }
+        },
+        render(){
+            console.log(this.age)
+            return h("div",{ },[
+                h("div",{ },[this.age=""]),
+                h("button",{
+                    onClick:this.add
+                },["加一"])
+            ])
+        },
+        methods: {
+            add() {
+                this.age++;
+            }
+        }
+    }
+    const appData = app.data()
+
+    const config = {}
+    Object.keys(appData).forEach((key) => {
+        config[key] = {
+            get() {
+                return appData[key]
+            },
+            set(value) {
+                appData[key] = value
+            }
+        }
+    })
+    const proto = Object.defineProperties({}, config)
+    Object.keys(app.methods).forEach((key) => {
+        proto[key] = app.methods[key].bind(proto)
+    })
+    app.render = app.render.bind(proto)
+    // 渲染函数中可以拿到的数据和方法
+    console.log(app.render())
+    // app.render()
+    // 方法中可以拿到数据
+    proto.add()
+
+</script>
+
+</html>

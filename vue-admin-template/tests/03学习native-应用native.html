@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 第1步,引入vue文件,去https://cdn.bytedance.com/找 -->
+  <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.14/vue.js" type="application/javascript"></script>
+</head>
+<body>
+  <!-- 第2步创建根组件元素 -->
+  <div id="app">
+    <!-- 父组件原生事件 -->
+    <!-- 1 键盘抬起 -->
+    <input @keyup="onKeyup1">1
+    <!-- 2 回车抬起 => 修饰符 -->
+    <!-- 事件修饰符是语法糖 -->
+    <input @keyup.enter="onKeyup2">2    
+    <!-- 3 回车抬起 => 完整写法 -->
+    <input @keyup="onKeyup3">3    
+    <!-- 2. 使用子组件 -->
+    <!-- 通过方式（1）组件通信 也无法实现判断子组件的具体哪个按键抬起-->
+    <!-- 4 组件通信 回车抬起 => 完整写法  思考：子组件传参可行吗？-->
+    <my-input @keyup="onKeyup4"></my-input>4
+    <!-- 5 组件通信 回车抬起 => 修饰符 -->
+    <my-input @keyup.enter="onKeyup5"></my-input>5
+    <!-- 注意：5 报错：按键修饰符只能作用于原生事件，不能用于组件通信 -->
+
+    <!-- 通过方式（2）原生事件监听可以实现判断子组件那个按键抬起 -->
+    <!-- 6 事件监听 回车抬起 => 修饰符  -->
+    <div @keyup.enter="onKeyup5">
+      <my-input></my-input>6
+    </div>
+    <!-- 7 事件监听 回车抬起 =>修饰符（完整写法同理）   可以使用native语法糖 -->
+    <my-input @keyup.native.enter="onKeyup5"></my-input>7
+    <!-- 通常 虽然原生事件名.native === 原生事件， 但通常native放最后-->
+    <my-input @keyup.enter.native="onKeyup5"></my-input>8
+  </div>
+</body>
+<script>
+  // 1. 创建子组件：需要在创建vue实例前，否则无法挂载上去
+  Vue.component('my-input',{
+    // 方式（1）组件通信
+    // template: `
+    //   <div><input @keyup="$emit('keyup')"> </div>
+    // `
+    // 方式（2）原生事件监听
+    template: `
+      <div><input /> </div>
+    `
+  }) 
+  //第3步,创建vue的实例
+  new Vue({
+    el: '#app',
+    methods: {
+      onKeyup1(){
+        console.log('键盘抬起')
+      },
+      onKeyup2(){
+        console.log('回车抬起')
+      },
+      onKeyup3(e){
+        // console.log(e)
+        if(e.code === "Enter"){
+          console.log('回车抬起')
+        }return
+      },
+      onKeyup4(e){
+        if(e.code === "Enter"){
+          console.log('回车抬起')
+        }return
+      },
+      onKeyup5(){
+        console.log('回车抬起')
+      },
+    }
+  })  
+</script>
+</html>

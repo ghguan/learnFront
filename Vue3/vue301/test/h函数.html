@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function h(tag, props, children) {
+        // 生成节点
+        const node = document.createElement(tag);
+        // 设置属性
+        Object.keys(props).forEach((key) => {
+            node.setAttribute(key,props[key])
+        })
+        // 设置子节点
+        children.forEach((child)=>{
+            if (!child)return
+            // 子节点是字符串
+            if(typeof child === "string"){
+                node.appendChild(document.createTextNode(child))
+            }else{
+                // 子节点是个节点
+                node.appendChild(child)
+            }
+        })
+        return node
+    }
+    set(newVal){
+        console.log('你赋值了')
+        newVal = 
+    }
+</script>
+
+</html>

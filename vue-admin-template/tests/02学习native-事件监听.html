@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 第1步,引入vue文件,去https://cdn.bytedance.com/找 -->
+  <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/2.6.14/vue.js" type="application/javascript"></script>
+</head>
+<body>
+  <!-- 第2步创建根组件元素 -->
+  <div id="app">
+    <!-- 2. 使用子组件 -->
+    <!-- 父组件中的子组件标签上的v-on，是父子通信，接收监听子组件发来的消息的-->
+    <!-- 恰巧事件名定义为click而已，与原生的click点击事件不同  -->
+    <my-button @click="onClick"></my-button>
+  </div>
+</body>
+<script>
+  // 1. 创建子组件
+  // 需要在创建vue实例前，否则无法挂载上去
+  Vue.component('my-button',{
+    template: `
+      <div><button @click="$emit('click')">按钮</button></div>
+    `
+  })
+  //第3步,创建vue的实例
+  new Vue({
+    el: '#app',
+    // 触发此方法
+    // 常规：父子通信才能实现 子组件绑定事件，$emit监听 ,父组件在子组件标签上接收事件
+    methods: {
+      onClick(){
+        console.log('点击了')
+      }
+    }
+  })  
+</script>
+</html>
